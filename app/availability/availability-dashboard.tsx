@@ -141,10 +141,10 @@ export function AvailabilityDashboard() {
                 <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                   Availability
                 </div>
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
                   Set when people can book with you.
                 </h1>
-                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
                   Choose your working days, define your hours, and keep everything
                   aligned to the timezone you actually use.
                 </p>
@@ -178,8 +178,8 @@ export function AvailabilityDashboard() {
           <section className="surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold text-slate-950">Timezone</h2>
-                <p className="text-sm leading-7 text-slate-600">
+                <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Timezone</h2>
+                <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                   All working hours below will be saved in this timezone.
                 </p>
               </div>
@@ -212,8 +212,8 @@ export function AvailabilityDashboard() {
           <Reveal delay={0.06}>
           <section className="surface-panel p-6 sm:p-8">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-950">Weekly hours</h2>
-              <p className="text-sm leading-7 text-slate-600">
+              <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Weekly hours</h2>
+              <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                 Enable the days you want to take meetings and set a time range for
                 each one.
               </p>
@@ -247,10 +247,10 @@ export function AvailabilityDashboard() {
                       >
                         <div className="flex items-center justify-between gap-4 rounded-[20px] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                           <div>
-                            <div className="text-sm font-semibold text-slate-950">
+                            <div className="text-sm font-semibold text-slate-950 dark:text-slate-50">
                               {weekday.label}
                             </div>
-                            <div className="text-xs text-slate-500">
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
                               {day.enabled ? "Available" : "Unavailable"}
                             </div>
                           </div>
@@ -279,7 +279,7 @@ export function AvailabilityDashboard() {
                         </div>
 
                         <label className="block space-y-2">
-                          <span className="text-sm font-medium text-slate-700">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Start time
                           </span>
                           <input
@@ -297,7 +297,7 @@ export function AvailabilityDashboard() {
                         </label>
 
                         <label className="block space-y-2">
-                          <span className="text-sm font-medium text-slate-700">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             End time
                           </span>
                           <input

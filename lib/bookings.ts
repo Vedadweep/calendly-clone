@@ -25,6 +25,12 @@ type BookingInput = {
   time: string;
 };
 
+type SlotRecord = {
+  time: string;
+  label: string;
+  isPast: boolean;
+};
+
 type MeetingRecord = {
   id: string;
   eventName: string;
@@ -143,7 +149,7 @@ export async function getAvailableSlots(eventTypeId: string, date: string) {
     return {
       eventType,
       timezone: availability?.timezone ?? "Asia/Kolkata",
-      slots: [] as Array<{ time: string; label: string }>,
+      slots: [] as SlotRecord[],
     };
   }
 
@@ -154,7 +160,7 @@ export async function getAvailableSlots(eventTypeId: string, date: string) {
     bookings.map((booking) => format(booking.startTime, "HH:mm")),
   );
   const now = new Date();
-  const slots: Array<{ time: string; label: string }> = [];
+  const slots: SlotRecord[] = [];
 
   for (
     let cursor = start;
@@ -163,13 +169,16 @@ export async function getAvailableSlots(eventTypeId: string, date: string) {
   ) {
     const slotEnd = addMinutes(cursor, eventType.durationInMinutes);
 
-    if (slotEnd > end || isBefore(cursor, now) || bookedTimes.has(format(cursor, "HH:mm"))) {
+    const isPast = isBefore(cursor, now);
+
+    if (slotEnd > end || bookedTimes.has(format(cursor, "HH:mm"))) {
       continue;
     }
 
     slots.push({
       time: format(cursor, "HH:mm"),
       label: formatBookingTime(cursor),
+      isPast,
     });
   }
 

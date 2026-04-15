@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AnimatedPage,
   HoverCard,
@@ -93,10 +93,10 @@ const integrations = [
 ];
 
 const primaryCtaClassName =
-  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2 dark:text-white";
 
 const secondaryCtaClassName =
-  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold !text-black shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 hover:!text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6]";
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-gray-900 shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6] dark:text-gray-900";
 
 export function HomePage() {
   const pathname = usePathname();
@@ -104,8 +104,27 @@ export function HomePage() {
   const [activeIntegration, setActiveIntegration] = useState<string | null>(null);
   const { toggleTheme } = useTheme();
 
+  useEffect(() => {
+    if (!activeIntegration) {
+      return undefined;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setActiveIntegration(null);
+    }, 2400);
+
+    return () => window.clearTimeout(timeout);
+  }, [activeIntegration]);
+
+  function scrollToFeatures() {
+    document.getElementById("features")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
   return (
-    <AnimatedPage className="min-h-screen text-slate-900">
+    <AnimatedPage className="min-h-screen text-slate-900 dark:text-slate-100">
       <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
         <div className="mx-auto h-[34rem] max-w-7xl bg-[radial-gradient(circle_at_top_left,rgba(0,107,255,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(59,146,255,0.14),transparent_26%),linear-gradient(180deg,#f8fbff_0%,rgba(255,255,255,0)_78%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.2),transparent_30%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_26%),linear-gradient(180deg,rgba(8,20,36,0.92)_0%,rgba(8,20,36,0)_78%)]" />
       </div>
@@ -114,7 +133,7 @@ export function HomePage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <Link
             href="/"
-            className="text-lg font-semibold tracking-tight text-slate-950"
+            className="rounded-full px-1 py-1 text-lg font-semibold tracking-[0.18em] text-slate-950 transition hover:text-[var(--primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 dark:text-slate-100 dark:hover:text-blue-200"
           >
             Cal Studio
           </Link>
@@ -130,10 +149,10 @@ export function HomePage() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                    className={`rounded-full px-4 py-2.5 text-sm font-semibold transition ${
                     isActive
-                      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:hover:bg-slate-900"
+                      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)] dark:text-white"
+                      : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -154,7 +173,7 @@ export function HomePage() {
             <InteractiveShell>
               <Link
                 href="/event-types"
-                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)]"
+                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)] dark:text-white"
               >
                 Get Started
               </Link>
@@ -188,8 +207,8 @@ export function HomePage() {
               >
                 <div className="flex items-center justify-between rounded-[22px] bg-[var(--panel-muted)] px-4 py-3">
                   <div>
-                    <div className="text-sm font-semibold text-slate-950">Theme</div>
-                    <div className="text-xs text-slate-500">Switch between light and dark mode</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-white">Theme</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Switch between light and dark mode</div>
                   </div>
                   <button
                     type="button"
@@ -213,8 +232,8 @@ export function HomePage() {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
                         isActive
-                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.2)]"
-                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
+                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.2)] dark:text-white"
+                          : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                       }`}
                     >
                       {item.label}
@@ -225,7 +244,7 @@ export function HomePage() {
                   <Link
                     href="/event-types"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] hover:text-white"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] hover:text-white dark:text-white"
                   >
                     Get Started
                   </Link>
@@ -244,13 +263,13 @@ export function HomePage() {
           className="mx-auto grid max-w-7xl gap-14 px-4 pb-20 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)] lg:items-center lg:gap-16 lg:px-8 lg:pb-28"
         >
           <div className="max-w-2xl">
-            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
+            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-300">
               Smarter scheduling for every meeting
             </div>
-            <h1 className="mt-6 text-5xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-6xl">
+            <h1 className="mt-6 text-5xl font-semibold tracking-[-0.05em] text-black dark:text-white sm:text-6xl">
               Easy scheduling ahead
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+            <p className="mt-6 max-w-xl text-lg leading-8 text-black dark:text-white">
               Let guests book time in seconds with a polished scheduling page,
               clear availability, and meeting flows that feel effortless.
             </p>
@@ -264,29 +283,30 @@ export function HomePage() {
                 </Link>
               </InteractiveShell>
               <InteractiveShell>
-                <a
-                  href="#features"
-                  className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                <button
+                  type="button"
+                  onClick={scrollToFeatures}
+                  className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3.5 text-sm font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:text-gray-900 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 dark:text-gray-300"
                 >
                   Explore features
-                </a>
+                </button>
               </InteractiveShell>
             </div>
-            <div className="mt-10 flex flex-wrap gap-6 text-sm text-slate-500">
+            <div className="mt-10 flex flex-wrap gap-6 text-sm text-black dark:text-white">
               <div>
-                <span className="block text-2xl font-semibold tracking-tight text-slate-950">
+                <span className="block text-2xl font-semibold tracking-tight text-black dark:text-white">
                   3 steps
                 </span>
                 to launch booking
               </div>
               <div>
-                <span className="block text-2xl font-semibold tracking-tight text-slate-950">
+                <span className="block text-2xl font-semibold tracking-tight text-black dark:text-white">
                   24/7
                 </span>
                 shareable scheduling
               </div>
               <div>
-                <span className="block text-2xl font-semibold tracking-tight text-slate-950">
+                <span className="block text-2xl font-semibold tracking-tight text-black dark:text-white">
                   1 link
                 </span>
                 for every invite
@@ -302,7 +322,7 @@ export function HomePage() {
               initial={{ opacity: 0, y: 32, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
-              className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-6"
+              className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-4 text-gray-900 shadow-[0_28px_80px_rgba(15,23,42,0.12)] dark:text-white sm:p-6"
             >
               <motion.div
                 animate={{ y: [0, -4, 0] }}
@@ -312,34 +332,34 @@ export function HomePage() {
                   repeat: Number.POSITIVE_INFINITY,
                   repeatType: "mirror",
                 }}
-                className="rounded-[26px] bg-[linear-gradient(180deg,#f8fbff_0%,#f2f7ff_100%)] p-5"
+                className="rounded-[26px] bg-[linear-gradient(180deg,#f8fbff_0%,#f2f7ff_100%)] p-5 text-gray-900 dark:text-white"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                       30 Minute Intro Call
                     </p>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                       Choose a date and pick a time that works for you.
                     </p>
                   </div>
-                  <div className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-700 shadow-sm">
+                  <div className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-600 dark:text-blue-300 shadow-sm">
                     Live preview
                   </div>
                 </div>
 
                 <div className="mt-6 grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
-                  <div className="rounded-[24px] border border-white bg-white p-4 shadow-sm">
-                    <div className="flex items-center justify-between text-sm font-medium text-slate-500">
+                  <div className="rounded-[24px] border border-white bg-white p-4 text-gray-900 shadow-sm dark:text-white">
+                    <div className="flex items-center justify-between text-sm font-medium text-gray-600 dark:text-gray-400">
                       <span>April 2026</span>
                       <span>Tue - Thu</span>
                     </div>
-                    <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    <div className="mt-4 grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:text-gray-400">
                       {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
                         <span key={day}>{day}</span>
                       ))}
                     </div>
-                    <div className="mt-3 grid grid-cols-7 gap-2 text-center text-sm font-medium text-slate-600">
+                    <div className="mt-3 grid grid-cols-7 gap-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">
                       {[
                         "", "", "1", "2", "3", "4", "5",
                         "6", "7", "8", "9", "10", "11", "12",
@@ -351,7 +371,7 @@ export function HomePage() {
                           key={`${day}-${index}`}
                           className={`flex h-10 items-center justify-center rounded-2xl ${
                             day === "16"
-                              ? "bg-[linear-gradient(135deg,#006bff,#5aa2ff)] font-semibold text-white shadow-[0_12px_24px_rgba(0,107,255,0.24)]"
+                              ? "bg-[linear-gradient(135deg,#006bff,#5aa2ff)] font-semibold text-white shadow-[0_12px_24px_rgba(0,107,255,0.24)] dark:text-white"
                               : day
                                 ? "bg-slate-50"
                                 : ""
@@ -363,11 +383,11 @@ export function HomePage() {
                     </div>
                   </div>
 
-                  <div className="rounded-[24px] border border-white bg-white p-4 shadow-sm">
-                    <p className="text-sm font-semibold text-slate-900">
+                  <div className="rounded-[24px] border border-white bg-white p-4 text-gray-900 shadow-sm dark:text-white">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                       Thursday, Apr 16
                     </p>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                       Available times
                     </p>
                     <div className="mt-4 space-y-3">
@@ -384,19 +404,19 @@ export function HomePage() {
                           transition={interactionTransition}
                           className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
                             index === 1
-                              ? "border-blue-200 bg-blue-50 text-blue-700"
-                              : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50/70 hover:text-blue-700"
+                              ? "border-blue-200 bg-blue-50 text-blue-600"
+                            : "border-slate-200 bg-white text-gray-700 hover:border-blue-200 hover:bg-blue-50/70 hover:text-blue-600 dark:text-gray-300"
                           }`}
                         >
                             {slot}
                         </motion.div>
                       ))}
                     </div>
-                    <div className="mt-5 rounded-[22px] bg-slate-950 px-4 py-4 text-white">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
+                    <div className="mt-5 rounded-[22px] bg-slate-950 px-4 py-4 text-white dark:text-white">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-100">
                         Booking summary
                       </p>
-                      <p className="mt-2 text-sm text-slate-200">
+                      <p className="mt-2 text-sm text-gray-100">
                         Intro Call with Calendly Clone
                       </p>
                     </div>
@@ -408,15 +428,18 @@ export function HomePage() {
         </motion.section>
 
         <Reveal>
-          <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
+          <section
+            id="features"
+            className="mx-auto max-w-7xl px-4 py-20 text-gray-900 dark:text-white sm:px-6 lg:px-8"
+          >
+          <div className="mx-auto max-w-2xl text-center text-gray-900 dark:text-white">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
               Features
             </p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
               Everything you need to start scheduling
             </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
+            <p className="mt-4 text-lg leading-8 text-gray-700 dark:text-gray-300">
               A clean homepage, clear booking flows, and familiar scheduling tools that help guests book faster.
             </p>
           </div>
@@ -427,14 +450,14 @@ export function HomePage() {
 
               return (
                 <HoverCard key={feature.title}>
-                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition-shadow">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(0,107,255,0.12),rgba(90,162,255,0.18))] text-blue-700">
+                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 text-gray-900 shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition-shadow dark:text-white">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(0,107,255,0.12),rgba(90,162,255,0.18))] text-blue-600">
                       <Icon />
                     </div>
-                    <h3 className="mt-6 text-2xl font-semibold tracking-tight text-slate-950">
+                    <h3 className="mt-6 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                       {feature.title}
                     </h3>
-                    <p className="mt-3 text-base leading-7 text-slate-600">
+                    <p className="mt-3 text-base leading-7 text-gray-700 dark:text-gray-300">
                       {feature.description}
                     </p>
                   </article>
@@ -447,21 +470,21 @@ export function HomePage() {
 
         <Reveal delay={0.04}>
           <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-10 rounded-[36px] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-6 py-10 shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:px-8 lg:px-10">
+          <div className="flex flex-col gap-10 rounded-[36px] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-6 py-10 text-gray-900 shadow-[0_24px_70px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-[linear-gradient(180deg,rgba(10,19,35,0.96)_0%,rgba(14,28,49,0.94)_100%)] dark:text-white sm:px-8 lg:px-10">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
                   Connect your tools
                 </p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                   Bring your calendar and meeting apps into one polished workflow
                 </h2>
-                <p className="mt-4 text-lg leading-8 text-slate-600">
+                <p className="mt-4 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Preview the integrations that will make scheduling feel more connected across your calendar, video, and team communication tools.
                 </p>
               </div>
 
-              <div className="rounded-[24px] border border-blue-100 bg-blue-50/80 px-5 py-4 text-sm leading-6 text-blue-900 shadow-[0_12px_28px_rgba(0,107,255,0.08)]">
+              <div className="rounded-[24px] border border-blue-100 bg-blue-50/80 px-5 py-4 text-sm leading-6 text-blue-900 shadow-[0_12px_28px_rgba(0,107,255,0.08)] dark:border-blue-400/20 dark:bg-blue-500/10 dark:text-blue-100">
                 Professional integrations, designed to fit naturally into the booking flow your team already uses.
               </div>
             </div>
@@ -473,28 +496,28 @@ export function HomePage() {
                 return (
                   <HoverCard key={integration.name}>
                     <article
-                      className={`group rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,var(--tw-gradient-stops))] p-6 ring-1 transition-shadow ${integration.accentClassName}`}
+                      className={`group rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,var(--tw-gradient-stops))] p-6 text-gray-900 ring-1 transition-shadow dark:text-white ${integration.accentClassName}`}
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-sm">
                           <Icon />
                         </div>
-                        <span className="rounded-full border border-blue-100 bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">
+                        <span className="rounded-full border border-blue-100 bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-300">
                           Popular
                         </span>
                       </div>
 
-                      <h3 className="mt-6 text-xl font-semibold tracking-tight text-slate-950">
+                      <h3 className="mt-6 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                         {integration.name}
                       </h3>
-                      <p className="mt-3 min-h-20 text-sm leading-7 text-slate-600">
+                      <p className="mt-3 min-h-20 text-sm leading-7 text-gray-700 dark:text-gray-300">
                         {integration.description}
                       </p>
 
                       <MotionButton
                         type="button"
                         onClick={() => setActiveIntegration(integration.name)}
-                        className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-[0_10px_24px_rgba(0,107,255,0.08)] transition hover:border-blue-300 hover:bg-blue-50"
+                      className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-[0_10px_24px_rgba(0,107,255,0.08)] transition hover:border-blue-300 hover:bg-blue-50"
                       >
                         Connect
                       </MotionButton>
@@ -508,13 +531,13 @@ export function HomePage() {
         </Reveal>
 
         <Reveal delay={0.06}>
-          <section className="border-y border-slate-200 bg-slate-50/80">
+          <section className="border-y border-slate-200 bg-slate-50/80 text-gray-900 dark:text-white">
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
+            <div className="max-w-2xl text-gray-900 dark:text-white">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
                 How It Works
               </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                 Launch your scheduling flow in minutes
               </h2>
             </div>
@@ -522,19 +545,19 @@ export function HomePage() {
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
               {workflowSteps.map((step, index) => (
                 <HoverCard key={step.title}>
-                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 text-gray-900 shadow-[0_18px_40px_rgba(15,23,42,0.05)] dark:text-white">
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                      <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-300">
                         {step.step}
                       </span>
-                      <span className="text-4xl font-semibold tracking-tight text-slate-200">
+                      <span className="text-4xl font-semibold tracking-tight text-gray-600 dark:text-gray-400">
                         0{index + 1}
                       </span>
                     </div>
-                    <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">
+                    <h3 className="mt-8 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
                       {step.title}
                     </h3>
-                    <p className="mt-3 text-base leading-7 text-slate-600">
+                    <p className="mt-3 text-base leading-7 text-gray-700 dark:text-gray-300">
                       {step.description}
                     </p>
                   </article>
@@ -547,7 +570,7 @@ export function HomePage() {
 
         <Reveal delay={0.08}>
           <section className="px-4 pb-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl rounded-[36px] bg-[linear-gradient(135deg,#0f172a_0%,#0b4fd6_54%,#53a2ff_100%)] px-6 py-14 text-white shadow-[0_28px_80px_rgba(15,23,42,0.18)] sm:px-10 lg:px-14">
+          <div className="mx-auto max-w-7xl rounded-[36px] bg-[linear-gradient(135deg,#0f172a_0%,#0b4fd6_54%,#53a2ff_100%)] px-6 py-14 text-white shadow-[0_28px_80px_rgba(15,23,42,0.18)] dark:text-white sm:px-10 lg:px-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-100">
@@ -556,7 +579,7 @@ export function HomePage() {
                 <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
                   Start scheduling now
                 </h2>
-                <p className="mt-4 text-lg leading-8 text-blue-50/90">
+                <p className="mt-4 text-lg leading-8 text-gray-100">
                   Create your first event type, open your availability, and share your booking page in a few clicks.
                 </p>
               </div>
@@ -584,20 +607,20 @@ export function HomePage() {
             transition={interactionTransition}
             className="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-center sm:inset-x-auto sm:right-6 sm:justify-end"
           >
-            <div className="pointer-events-auto w-full max-w-sm rounded-[24px] border border-blue-100 bg-white p-4 shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+            <div className="pointer-events-auto w-full max-w-sm rounded-[24px] border border-blue-100 bg-white p-4 text-gray-900 shadow-[0_24px_60px_rgba(15,23,42,0.14)] dark:text-white">
               <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
                   <SparkIcon />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-slate-950">{activeIntegration}</p>
-                  <p className="mt-1 text-sm text-slate-600">Integration coming soon</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{activeIntegration}</p>
+                  <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">Integration coming soon</p>
                 </div>
                 <MotionButton
                   type="button"
                   aria-label="Dismiss integration message"
                   onClick={() => setActiveIntegration(null)}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-gray-600 transition hover:bg-slate-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-900 dark:hover:text-white"
                 >
                   <CloseIcon />
                 </MotionButton>

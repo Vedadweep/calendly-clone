@@ -45,10 +45,13 @@ export function DashboardShell({ children }: DashboardShellProps) {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-start justify-between gap-4 lg:items-center">
             <div className="space-y-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
+              <Link
+                href="/"
+                className="inline-flex rounded-full px-1 py-0.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--primary)] transition hover:text-[var(--primary-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 dark:text-blue-100 dark:hover:text-blue-200"
+              >
                 Cal Studio
-              </p>
-              <h1 className="text-xl font-semibold text-slate-950 sm:text-[1.35rem]">
+              </Link>
+              <h1 className="text-xl font-semibold text-slate-950 dark:text-slate-50 sm:text-[1.35rem]">
                 Scheduling Dashboard
               </h1>
             </div>
@@ -93,8 +96,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`block rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
                         isActive
-                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)] dark:text-white"
+                          : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                       }`}
                     >
                       {item.label}
@@ -128,12 +131,12 @@ export function DashboardShell({ children }: DashboardShellProps) {
                   return (
                     <InteractiveShell key={item.href}>
                       <Link
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
-                          isActive
-                            ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
-                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
+                        isActive
+                            ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)] dark:text-white"
+                            : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                         }`}
                       >
                         {item.label}
@@ -141,7 +144,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                     </InteractiveShell>
                   );
                 })}
-                <div className="rounded-[20px] bg-[var(--panel-muted)] px-4 py-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <div className="rounded-[20px] bg-[var(--panel-muted)] px-4 py-3 text-sm leading-6 text-gray-700 dark:text-gray-300">
                   Switch themes, jump home quickly, and manage bookings from a cleaner mobile menu.
                 </div>
               </motion.nav>

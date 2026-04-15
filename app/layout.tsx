@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full font-sans text-[15px] text-slate-900 transition-colors duration-300 sm:text-base">
+      <body className="min-h-full font-sans text-[15px] text-slate-900 transition-colors duration-300 dark:text-slate-100 sm:text-base">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

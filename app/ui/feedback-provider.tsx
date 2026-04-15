@@ -108,7 +108,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                       <MotionButton
                         type="button"
                         onClick={() => dismissToast(toast.id)}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-current/65 transition hover:bg-black/5 hover:text-current dark:hover:bg-white/8"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-current transition hover:bg-black/5 hover:text-current dark:hover:bg-white/8"
                         aria-label="Dismiss toast"
                       >
                         <CloseIcon />
@@ -143,7 +143,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                 <h2 className="mt-5 text-2xl font-semibold text-slate-950 dark:text-slate-50">
                   {confirmState.options.title ?? "Are you sure?"}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                <p className="mt-3 text-sm leading-7 text-gray-700 dark:text-gray-300">
                   {confirmState.options.description}
                 </p>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 import { DashboardShell } from "@/app/dashboard-shell";
 import {
@@ -39,9 +39,11 @@ export function EventTypesDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [copiedEventTypeId, setCopiedEventTypeId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const { showToast } = useToast();
   const { confirm } = useConfirm();
+  const copyResetTimeoutRef = useRef<number | null>(null);
 
   const activeEventType =
     activeEventTypeId === null
@@ -78,6 +80,14 @@ export function EventTypesDashboard() {
 
   useEffect(() => {
     void fetchEventTypes();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (copyResetTimeoutRef.current) {
+        window.clearTimeout(copyResetTimeoutRef.current);
+      }
+    };
   }, []);
 
   function openCreateModal() {
@@ -198,10 +208,23 @@ export function EventTypesDashboard() {
     });
   }
 
-  async function handleCopyLink(slug: string) {
-    const bookingUrl = `${window.location.origin}/book/${slug}`;
-    await navigator.clipboard.writeText(bookingUrl);
-    showToast("Copied to clipboard", "info");
+  async function handleCopyLink(eventType: EventTypeRecord) {
+    try {
+      const bookingUrl = `${window.location.origin}/book/${eventType.slug}`;
+      await navigator.clipboard.writeText(bookingUrl);
+      setCopiedEventTypeId(eventType.id);
+      showToast("Copied to clipboard", "info");
+
+      if (copyResetTimeoutRef.current) {
+        window.clearTimeout(copyResetTimeoutRef.current);
+      }
+
+      copyResetTimeoutRef.current = window.setTimeout(() => {
+        setCopiedEventTypeId(null);
+      }, 2000);
+    } catch {
+      setError("Unable to copy booking link.");
+    }
   }
 
   return (
@@ -217,10 +240,10 @@ export function EventTypesDashboard() {
                   Event Type Dashboard
                 </div>
                 <div className="space-y-4">
-                  <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                  <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
                     Design booking options your guests can trust.
                   </h1>
-                  <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                  <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
                     Create polished event types, tune their duration, and keep your
                     scheduling lineup organized in one place.
                   </p>
@@ -237,7 +260,7 @@ export function EventTypesDashboard() {
                   className="button-primary min-h-24 rounded-[24px] px-5 py-5 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 sm:min-h-28 sm:px-6"
                 >
                   <span className="flex w-full flex-col gap-1">
-                    <span className="text-xs uppercase tracking-[0.22em] text-white/72">
+                    <span className="text-xs uppercase tracking-[0.22em] text-white dark:text-white">
                       Create
                     </span>
                     <span className="text-lg tracking-tight">Add New Event</span>
@@ -275,10 +298,10 @@ export function EventTypesDashboard() {
                 <div className="empty-state-icon mx-auto flex h-16 w-16 items-center justify-center rounded-[22px]">
                   <CalendarGlyph />
                 </div>
-                <h2 className="mt-6 text-2xl font-semibold text-slate-950">
+                <h2 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-slate-50">
                   No event types yet
                 </h2>
-                <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600">
+                <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-gray-700 dark:text-gray-300">
                   No events yet — create your first event and start sharing a polished booking page.
                 </p>
                 <MotionButton
@@ -292,19 +315,17 @@ export function EventTypesDashboard() {
             ) : (
               eventTypes.map((eventType) => (
                 <HoverCard key={eventType.id}>
-                  <article className="group surface-panel flex flex-col p-6 sm:p-7">
+                    <article className="group surface-panel flex flex-col p-6 sm:p-7">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:bg-slate-800 dark:text-gray-300">
                         {formatDurationLabel(eventType.durationInMinutes)}
                       </div>
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                        <MotionButton
-                          type="button"
-                          onClick={() => void handleCopyLink(eventType.slug)}
-                          className="button-secondary w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
-                        >
-                          Copy Link
-                        </MotionButton>
+                        <AnimatedCopyButton
+                          copied={copiedEventTypeId === eventType.id}
+                          onClick={() => void handleCopyLink(eventType)}
+                          compact
+                        />
                         <MotionButton
                           type="button"
                           onClick={() => openEditModal(eventType)}
@@ -323,11 +344,11 @@ export function EventTypesDashboard() {
                     </div>
 
                     <div className="mt-7 space-y-3">
-                      <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
+                      <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950 dark:text-slate-50">
                         {eventType.name}
                       </h2>
-                      <p className="text-sm text-slate-500">/{eventType.slug}</p>
-                      <p className="text-sm leading-7 text-slate-600">
+                      <p className="text-sm text-gray-700 dark:text-gray-300">/{eventType.slug}</p>
+                      <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                         Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
                         session with a clean booking link and clear scheduling
                         details.
@@ -337,20 +358,17 @@ export function EventTypesDashboard() {
                     <div className="mt-auto pt-8">
                       <div className="muted-panel flex flex-col gap-3 px-4 py-4">
                         <div>
-                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:text-gray-400">
                             Booking URL
                           </div>
-                          <div className="mt-2 break-all text-sm font-medium text-slate-700">
+                          <div className="mt-2 break-all text-sm font-medium text-slate-700 dark:text-slate-200">
                             /book/{eventType.slug}
                           </div>
                         </div>
-                        <MotionButton
-                          type="button"
-                          onClick={() => void handleCopyLink(eventType.slug)}
-                          className="button-secondary px-4 py-2.5 text-sm font-semibold"
-                        >
-                          Copy booking link
-                        </MotionButton>
+                        <AnimatedCopyButton
+                          copied={copiedEventTypeId === eventType.id}
+                          onClick={() => void handleCopyLink(eventType)}
+                        />
                       </div>
                     </div>
                   </article>
@@ -376,14 +394,14 @@ export function EventTypesDashboard() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={interactionTransition}
-            className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-5 shadow-[var(--shadow-float)] sm:p-8"
+            className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-5 text-gray-900 shadow-[var(--shadow-float)] dark:text-white sm:p-8"
           >
             <div className="flex items-start justify-between gap-4 sm:gap-6">
               <div>
                 <p className="text-sm font-medium text-[var(--primary)]">
                   {activeEventType ? "Edit event type" : "Create event type"}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-950">
+                <h2 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-slate-50">
                   {activeEventType
                     ? "Update booking details"
                     : "Build a new booking experience"}
@@ -392,7 +410,7 @@ export function EventTypesDashboard() {
               <MotionButton
                 type="button"
                 onClick={closeModal}
-                className="rounded-full border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-50"
+                className="rounded-full border border-slate-200 p-2 text-gray-600 transition hover:bg-slate-50 hover:text-gray-900 dark:border-slate-700 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                 aria-label="Close modal"
               >
                 <CloseGlyph />
@@ -401,7 +419,7 @@ export function EventTypesDashboard() {
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
               <label className="block space-y-2">
-                <span className="text-sm font-medium text-slate-700">
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                   Event name
                 </span>
                 <input
@@ -430,7 +448,7 @@ export function EventTypesDashboard() {
 
               <div className="grid gap-5 sm:grid-cols-[1.2fr_0.8fr]">
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700">Slug</span>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Slug</span>
                   <input
                     type="text"
                     value={form.slug}
@@ -447,7 +465,7 @@ export function EventTypesDashboard() {
                 </label>
 
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                     Duration
                   </span>
                   <select
@@ -469,9 +487,9 @@ export function EventTypesDashboard() {
                 </label>
               </div>
 
-              <div className="muted-panel break-words px-4 py-4 text-sm text-slate-600">
+              <div className="muted-panel break-words px-4 py-4 text-sm text-gray-700 dark:text-gray-300">
                 Booking link preview:
-                <span className="ml-2 break-all font-medium text-slate-900">
+                <span className="ml-2 break-all font-medium text-slate-900 dark:text-slate-100">
                   calendly-clone.local/book/{slugifyEventType(form.slug || form.name) || "your-event"}
                 </span>
               </div>
@@ -509,11 +527,11 @@ export function EventTypesDashboard() {
 function HeroMetric({ label, value }: { label: string; value: string }) {
   return (
     <HoverCard>
-      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 text-gray-900 shadow-[0_16px_34px_rgba(15,23,42,0.06)] dark:text-white">
+        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600 dark:text-gray-400">
           {label}
         </div>
-        <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+        <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
           {value}
         </div>
       </div>
@@ -556,5 +574,43 @@ function CloseGlyph() {
       <path d="m6 6 12 12" />
       <path d="M18 6 6 18" />
     </svg>
+  );
+}
+
+function AnimatedCopyButton({
+  copied,
+  onClick,
+  compact = false,
+}: {
+  copied: boolean;
+  onClick: () => void;
+  compact?: boolean;
+}) {
+  return (
+    <MotionButton
+      type="button"
+      onClick={onClick}
+      className={`button-secondary ${compact ? "w-full px-3.5 py-2 text-sm font-medium sm:w-auto" : "px-4 py-2.5 text-sm font-semibold"} ${copied ? "border-emerald-200 bg-emerald-50 text-emerald-700" : ""}`}
+      animate={copied ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+      transition={{
+        ...interactionTransition,
+        scale: {
+          duration: 0.28,
+          times: [0, 0.5, 1],
+        },
+      }}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={copied ? "copied" : "copy"}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={interactionTransition}
+        >
+          {copied ? "Copied!" : compact ? "Copy Link" : "Copy booking link"}
+        </motion.span>
+      </AnimatePresence>
+    </MotionButton>
   );
 }

@@ -106,10 +106,10 @@ export function MeetingsDashboard({
                   Meetings
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                  <h2 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
                     Keep every scheduled conversation organized.
                   </h2>
-                  <p className="max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+                  <p className="max-w-xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
                     Review what is coming up, look back at completed sessions,
                     and cancel bookings when plans change.
                   </p>
@@ -193,12 +193,12 @@ function MeetingsSection({
     <section className="surface-panel p-6 sm:p-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
             {title}
           </h2>
-          <p className="mt-2 text-sm leading-7 text-slate-600">{description}</p>
+          <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">{description}</p>
         </div>
-        <div className="inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600">
+        <div className="inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-gray-700 dark:bg-slate-800 dark:text-gray-300">
           {meetings.length} meeting{meetings.length === 1 ? "" : "s"}
         </div>
       </div>
@@ -208,10 +208,10 @@ function MeetingsSection({
           <div className="empty-state-icon mx-auto flex h-16 w-16 items-center justify-center rounded-[22px]">
             <CalendarGlyph />
           </div>
-          <h3 className="mt-5 text-lg font-semibold text-slate-950">
+          <h3 className="mt-5 text-lg font-semibold text-slate-950 dark:text-slate-50">
             {emptyTitle}
           </h3>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
+          <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-gray-700 dark:text-gray-300">
             {emptyDescription}
           </p>
           {title === "Upcoming" ? (
@@ -230,16 +230,16 @@ function MeetingsSection({
 
             return (
               <HoverCard key={meeting.id} hoverScale={1.02}>
-                <article className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_auto]">
+                <article className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 text-gray-900 shadow-[0_18px_45px_rgba(15,23,42,0.06)] dark:text-white sm:p-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_auto]">
                   <div className="space-y-3">
                     <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
                       {meeting.eventName}
                     </div>
                     <div>
-                      <h3 className="break-words text-xl font-semibold text-slate-950">
+                      <h3 className="break-words text-xl font-semibold text-slate-950 dark:text-slate-50">
                         {meeting.inviteeName}
                       </h3>
-                      <p className="mt-1 break-all text-sm text-slate-500">
+                      <p className="mt-1 break-all text-sm text-gray-700 dark:text-gray-300">
                         {meeting.inviteeEmail}
                       </p>
                     </div>
@@ -291,13 +291,13 @@ function MetricCard({
 }) {
   const toneClassName =
     tone === "blue"
-      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_18px_35px_rgba(0,107,255,0.24)]"
-      : "bg-white text-slate-950 shadow-[0_16px_30px_rgba(15,23,42,0.06)]";
+      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_18px_35px_rgba(0,107,255,0.24)] dark:text-white"
+      : "bg-white text-gray-900 shadow-[0_16px_30px_rgba(15,23,42,0.06)] dark:text-white";
 
   return (
     <HoverCard hoverScale={1.025}>
       <div className={`rounded-[24px] px-5 py-4 ${toneClassName}`}>
-        <div className="text-sm font-medium opacity-90">{label}</div>
+        <div className="text-sm font-medium">{label}</div>
         <div className="mt-2 text-3xl font-semibold tracking-tight">{value}</div>
       </div>
     </HoverCard>
@@ -307,10 +307,10 @@ function MetricCard({
 function DetailCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="muted-panel px-4 py-4">
-      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:text-gray-400">
         {label}
       </div>
-      <div className="mt-2 text-sm font-medium text-slate-700">{value}</div>
+      <div className="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">{value}</div>
     </div>
   );
 }

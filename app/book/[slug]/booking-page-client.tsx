@@ -25,6 +25,7 @@ type EventTypeDetails = {
 type SlotRecord = {
   time: string;
   label: string;
+  isPast: boolean;
 };
 
 type SlotsResponse = {
@@ -50,6 +51,11 @@ type BookingResponse = {
 type BookingPageClientProps = {
   eventType: EventTypeDetails;
   availabilityWeekdays: number[];
+};
+
+type FieldErrors = {
+  name?: string;
+  email?: string;
 };
 
 const today = startOfDay(new Date());
@@ -80,6 +86,7 @@ export function BookingPageClient({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [confirmation, setConfirmation] = useState<BookingResponse["booking"] | null>(
     null,
   );
@@ -143,8 +150,30 @@ export function BookingPageClient({
     return availabilityWeekdays.includes(date.getDay());
   }
 
+  function validateFields() {
+    const nextErrors: FieldErrors = {};
+
+    if (!name.trim()) {
+      nextErrors.name = "Name is required.";
+    }
+
+    if (!email.trim()) {
+      nextErrors.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      nextErrors.email = "Enter a valid email address.";
+    }
+
+    setFieldErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  }
+
   function handleBookingSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setConfirmation(null);
+
+    if (!validateFields()) {
+      return;
+    }
 
     if (!selectedTime) {
       setError("Select a time slot to continue.");
@@ -162,8 +191,8 @@ export function BookingPageClient({
           },
           body: JSON.stringify({
             eventTypeId: eventType.id,
-            name,
-            email,
+            name: name.trim(),
+            email: email.trim(),
             date: format(selectedDate, "yyyy-MM-dd"),
             time: selectedTime,
           }),
@@ -180,6 +209,7 @@ export function BookingPageClient({
         setConfirmation(payload?.booking ?? null);
         setName("");
         setEmail("");
+        setFieldErrors({});
         setSelectedTime(null);
         showToast("Booking successful");
         await loadSlots(selectedDate, true);
@@ -205,10 +235,10 @@ export function BookingPageClient({
                 Public Booking Page
               </div>
               <div className="space-y-2">
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
                   {eventType.name}
                 </h1>
-                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
                   Pick a day, choose a time, and reserve your{" "}
                   {formatDurationLabel(eventType.durationInMinutes).toLowerCase()} session.
                 </p>
@@ -243,10 +273,10 @@ export function BookingPageClient({
             <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
               Booking Confirmed
             </div>
-            <h2 className="mt-4 text-2xl font-semibold text-slate-950">
+            <h2 className="mt-4 text-2xl font-semibold text-slate-950 dark:text-slate-50">
               {confirmation.guestName}, you&apos;re booked.
             </h2>
-            <p className="mt-3 text-base leading-8 text-slate-600">
+            <p className="mt-3 text-base leading-8 text-gray-700 dark:text-gray-300">
               {confirmation.eventType.name} is scheduled for {confirmation.dateLabel} at{" "}
               {confirmation.timeLabel}. A confirmation can be sent to {confirmation.guestEmail}.
             </p>
@@ -258,8 +288,8 @@ export function BookingPageClient({
           <HoverCard>
           <div className="surface-panel p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-950">Select a date</h2>
-              <p className="text-sm leading-7 text-slate-600">
+              <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Select a date</h2>
+              <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                 Available days are based on the host&apos;s weekly schedule.
               </p>
             </div>
@@ -289,12 +319,12 @@ export function BookingPageClient({
           <div className="surface-panel min-w-0 p-5 sm:p-6">
             <div className="flex flex-col gap-2 border-b border-slate-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-slate-950">Available times</h2>
-                <p className="text-sm leading-7 text-slate-600">
+                <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Available times</h2>
+                <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                   {format(selectedDate, "EEEE, MMMM d")}
                 </p>
               </div>
-              <div className="break-all text-sm text-slate-500">{timezone}</div>
+              <div className="break-all text-sm text-gray-700 dark:text-gray-300">{timezone}</div>
             </div>
 
             <div className="mt-5">
@@ -312,10 +342,10 @@ export function BookingPageClient({
                   <div className="empty-state-icon mx-auto flex h-14 w-14 items-center justify-center rounded-[20px]">
                     <CalendarIcon />
                   </div>
-                  <div className="mt-4 text-lg font-semibold text-slate-950">
+                  <div className="mt-4 text-lg font-semibold text-slate-950 dark:text-slate-50">
                     No time slots available
                   </div>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">
+                  <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
                     Choose another day to see open times for this event.
                   </p>
                 </div>
@@ -323,19 +353,33 @@ export function BookingPageClient({
                 <div className="grid gap-3 sm:grid-cols-2">
                   {slots.map((slot) => {
                     const isSelected = selectedTime === slot.time;
+                    const isDisabled = slot.isPast;
 
                     return (
                       <MotionButton
                         key={slot.time}
                         type="button"
-                        onClick={() => setSelectedTime(slot.time)}
+                        onClick={() => {
+                          if (isDisabled) {
+                            return;
+                          }
+
+                          setSelectedTime(slot.time);
+                          setError(null);
+                        }}
+                        disabled={isDisabled}
+                        aria-disabled={isDisabled}
                         className={`min-h-11 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
-                          isSelected
-                            ? "border-[var(--primary)] bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_30px_rgba(0,107,255,0.22)]"
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[var(--primary)] hover:bg-[var(--accent)] hover:text-[var(--primary)] hover:shadow-[0_14px_30px_rgba(0,107,255,0.12)]"
+                          isDisabled
+                            ? "cursor-not-allowed border-slate-200 bg-slate-100 text-gray-700 dark:text-gray-300"
+                            : isSelected
+                            ? "border-[var(--primary)] bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_30px_rgba(0,107,255,0.22)] dark:text-white"
+                            : "border-slate-200 bg-white text-gray-700 hover:border-[var(--primary)] hover:bg-[var(--accent)] hover:text-[var(--primary)] hover:shadow-[0_14px_30px_rgba(0,107,255,0.12)] dark:text-gray-300"
                         }`}
                         whileHover={
-                          isSelected
+                          isDisabled
+                            ? undefined
+                            : isSelected
                             ? { scale: 1.02, filter: "brightness(1.03)" }
                             : {
                                 scale: 1.04,
@@ -344,9 +388,16 @@ export function BookingPageClient({
                                 color: "#0050d4",
                               }
                         }
-                        whileTap={{ scale: 0.97 }}
+                        whileTap={isDisabled ? undefined : { scale: 0.97 }}
                       >
-                        {slot.label}
+                        <span className="flex items-center justify-center gap-2">
+                          {slot.label}
+                          {isDisabled ? (
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-700 dark:text-gray-300">
+                              Past
+                            </span>
+                          ) : null}
+                        </span>
                       </MotionButton>
                     );
                   })}
@@ -356,8 +407,8 @@ export function BookingPageClient({
 
             <form className="mt-8 space-y-4 border-t border-slate-100 pt-6" onSubmit={handleBookingSubmit}>
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold text-slate-950">Your details</h3>
-                <p className="text-sm text-slate-600">
+                <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">Your details</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   {selectedTime
                     ? `Booking ${format(selectedDate, "MMMM d")} at ${
                         slots.find((slot) => slot.time === selectedTime)?.label ?? selectedTime
@@ -367,27 +418,45 @@ export function BookingPageClient({
               </div>
 
               <label className="block space-y-2">
-                <span className="text-sm font-medium text-slate-700">Name</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Name</span>
                 <input
                   type="text"
                   value={name}
-                  onChange={(event) => setName(event.target.value)}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    setFieldErrors((current) => ({ ...current, name: undefined }));
+                  }}
                   placeholder="Jane Doe"
                   className="field-control"
+                  aria-invalid={fieldErrors.name ? "true" : "false"}
                   required
                 />
+                {fieldErrors.name ? (
+                  <p className="error-text">{fieldErrors.name}</p>
+                ) : (
+                  <p className="helper-text">Enter the full name you want on the booking.</p>
+                )}
               </label>
 
               <label className="block space-y-2">
-                <span className="text-sm font-medium text-slate-700">Email</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
                 <input
                   type="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    setFieldErrors((current) => ({ ...current, email: undefined }));
+                  }}
                   placeholder="jane@example.com"
                   className="field-control"
+                  aria-invalid={fieldErrors.email ? "true" : "false"}
                   required
                 />
+                {fieldErrors.email ? (
+                  <p className="error-text">{fieldErrors.email}</p>
+                ) : (
+                  <p className="helper-text">We’ll use this for your confirmation details.</p>
+                )}
               </label>
 
               <MotionButton
@@ -431,11 +500,11 @@ function CalendarIcon() {
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
     <HoverCard>
-      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-4 text-sm text-slate-600 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
-        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-4 text-sm text-gray-700 shadow-[0_16px_34px_rgba(15,23,42,0.06)] dark:text-gray-300">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-700 dark:text-gray-300">
           {label}
         </div>
-        <div className="mt-2 text-base font-semibold text-slate-950">{value}</div>
+        <div className="mt-2 text-base font-semibold text-slate-950 dark:text-slate-50">{value}</div>
       </div>
     </HoverCard>
   );

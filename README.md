@@ -55,3 +55,6 @@ calendly-clone/
 ## Summary
 
 This project presents a professional scheduling platform inspired by Calendly and built with a modern full-stack JavaScript workflow. It is suitable for a college project submission and showcases both frontend and backend implementation in a practical real-world use case.
+
+## Live Demo
+calendly-clone-lake.vercel.app

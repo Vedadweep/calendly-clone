@@ -51,24 +51,43 @@ const workflowSteps = [
 const integrations = [
   {
     name: "Google Calendar",
-    description: "Keep upcoming bookings in sync with the calendar you already use every day.",
+    description: "Keep upcoming bookings aligned with the calendar your team already relies on every day.",
     icon: GoogleCalendarIcon,
+    accentClassName:
+      "from-[#eef5ff] via-white to-[#f8fbff] ring-[#d6e6ff] shadow-[0_18px_36px_rgba(66,133,244,0.12)]",
   },
   {
     name: "Microsoft Teams",
-    description: "Pair meetings with your team workflow and bring invites into one familiar place.",
+    description: "Bring meeting coordination into your team workflow with a familiar collaboration layer.",
     icon: TeamsIcon,
+    accentClassName:
+      "from-[#f1f0ff] via-white to-[#f7f6ff] ring-[#dfdcff] shadow-[0_18px_36px_rgba(91,95,199,0.12)]",
   },
   {
     name: "Zoom",
-    description: "Prepare for video meetings with a simple conferencing connection preview.",
+    description: "Prepare video calls with conferencing tools that feel seamless from booking to join time.",
     icon: ZoomIcon,
+    accentClassName:
+      "from-[#edf4ff] via-white to-[#f7fbff] ring-[#d7e8ff] shadow-[0_18px_36px_rgba(11,92,255,0.12)]",
+  },
+  {
+    name: "Slack",
+    description: "Keep scheduling updates close to your conversations so teams can move faster together.",
+    icon: SlackIcon,
+    accentClassName:
+      "from-[#fff3fb] via-white to-[#fffaf3] ring-[#f2dce9] shadow-[0_18px_36px_rgba(74,21,75,0.12)]",
   },
 ];
 
+const primaryCtaClassName =
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
+
+const secondaryCtaClassName =
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-blue-700 shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6]";
+
 export function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [activeIntegration, setActiveIntegration] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -162,7 +181,7 @@ export function HomePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/event-types"
-                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)]"
+                className={primaryCtaClassName}
               >
                 Get Started
               </Link>
@@ -325,6 +344,65 @@ export function HomePage() {
           </div>
         </section>
 
+        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-10 rounded-[36px] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-6 py-10 shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:px-8 lg:px-10">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
+                  Connect your tools
+                </p>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                  Bring your calendar and meeting apps into one polished workflow
+                </h2>
+                <p className="mt-4 text-lg leading-8 text-slate-600">
+                  Preview the integrations that will make scheduling feel more connected across your calendar, video, and team communication tools.
+                </p>
+              </div>
+
+              <div className="rounded-[24px] border border-blue-100 bg-blue-50/80 px-5 py-4 text-sm leading-6 text-blue-900 shadow-[0_12px_28px_rgba(0,107,255,0.08)]">
+                Professional integrations, designed to fit naturally into the booking flow your team already uses.
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              {integrations.map((integration) => {
+                const Icon = integration.icon;
+
+                return (
+                  <article
+                    key={integration.name}
+                    className={`group rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,var(--tw-gradient-stops))] p-6 ring-1 transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_24px_48px_rgba(15,23,42,0.1)] ${integration.accentClassName}`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-sm">
+                        <Icon />
+                      </div>
+                      <span className="rounded-full border border-blue-100 bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">
+                        Popular
+                      </span>
+                    </div>
+
+                    <h3 className="mt-6 text-xl font-semibold tracking-tight text-slate-950">
+                      {integration.name}
+                    </h3>
+                    <p className="mt-3 min-h-20 text-sm leading-7 text-slate-600">
+                      {integration.description}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveIntegration(integration.name)}
+                      className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-[0_10px_24px_rgba(0,107,255,0.08)] transition hover:border-blue-300 hover:bg-blue-50"
+                    >
+                      Connect
+                    </button>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         <section className="border-y border-slate-200 bg-slate-50/80">
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
@@ -362,56 +440,6 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
-                Integrations Preview
-              </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-                Connect the tools around your meetings
-              </h2>
-              <p className="mt-4 text-lg leading-8 text-slate-600">
-                Preview the integrations that will make your booking experience feel even more connected.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowComingSoon(true)}
-              className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_36px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5"
-            >
-              {showComingSoon ? "Coming soon" : "Connect"}
-            </button>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {integrations.map((integration) => {
-              const Icon = integration.icon;
-
-              return (
-                <article
-                  key={integration.name}
-                  className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.06)]"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 text-slate-900">
-                    <Icon />
-                  </div>
-                  <h3 className="mt-6 text-xl font-semibold tracking-tight text-slate-950">
-                    {integration.name}
-                  </h3>
-                  <p className="mt-3 text-base leading-7 text-slate-600">
-                    {integration.description}
-                  </p>
-                  <div className="mt-6 text-sm font-medium text-blue-700">
-                    {showComingSoon ? "Coming soon" : "Ready for future connection"}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
         <section className="px-4 pb-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[36px] bg-[linear-gradient(135deg,#0f172a_0%,#0b4fd6_54%,#53a2ff_100%)] px-6 py-14 text-white shadow-[0_28px_80px_rgba(15,23,42,0.18)] sm:px-10 lg:px-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -429,7 +457,7 @@ export function HomePage() {
 
               <Link
                 href="/event-types"
-                className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-blue-700 shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5"
+                className={secondaryCtaClassName}
               >
                 Get Started
               </Link>
@@ -437,6 +465,30 @@ export function HomePage() {
           </div>
         </section>
       </main>
+
+      {activeIntegration ? (
+        <div className="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-center sm:inset-x-auto sm:right-6 sm:justify-end">
+          <div className="pointer-events-auto w-full max-w-sm rounded-[24px] border border-blue-100 bg-white p-4 shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+                <SparkIcon />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-slate-950">{activeIntegration}</p>
+                <p className="mt-1 text-sm text-slate-600">Integration coming soon</p>
+              </div>
+              <button
+                type="button"
+                aria-label="Dismiss integration message"
+                onClick={() => setActiveIntegration(null)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -561,6 +613,56 @@ function ZoomIcon() {
     <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
       <rect x="3.5" y="7" width="11" height="10" rx="3" fill="#0b5cff" />
       <path d="M14.5 10.2 20 7.8v8.4l-5.5-2.4Z" fill="#63a5ff" />
+    </svg>
+  );
+}
+
+function SlackIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7">
+      <rect x="10.3" y="2.8" width="3.8" height="7.6" rx="1.9" fill="#36c5f0" />
+      <rect x="13.6" y="10.3" width="7.6" height="3.8" rx="1.9" fill="#2eb67d" />
+      <rect x="9.9" y="13.6" width="3.8" height="7.6" rx="1.9" fill="#ecb22e" />
+      <rect x="2.8" y="9.9" width="7.6" height="3.8" rx="1.9" fill="#e01e5a" />
+      <circle cx="8.3" cy="8.3" r="1.9" fill="#36c5f0" />
+      <circle cx="15.7" cy="8.3" r="1.9" fill="#2eb67d" />
+      <circle cx="15.7" cy="15.7" r="1.9" fill="#ecb22e" />
+      <circle cx="8.3" cy="15.7" r="1.9" fill="#e01e5a" />
+    </svg>
+  );
+}
+
+function SparkIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m6 6 12 12" />
+      <path d="M18 6 6 18" />
     </svg>
   );
 }

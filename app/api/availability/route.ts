@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     await ensureDatabaseReady();
     const payload = normalizeAvailabilityInput(await request.json());
 
-    const availability = await prisma.$transaction(async (transaction) => {
+    const availability = await prisma.$transaction(async (transaction: any) => {
       const existingCount = await transaction.availability.count();
 
       if (existingCount > 0) {

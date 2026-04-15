@@ -58,3 +58,4 @@ This project presents a professional scheduling platform inspired by Calendly an
 
 ## Live Demo
 calendly-clone-lake.vercel.app
+> Note: Database features may be limited in deployed version due to serverless environment.

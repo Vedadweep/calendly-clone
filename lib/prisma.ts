@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as typeof globalThis & {
   prisma?: PrismaClient;
-  eventTypeTableReady?: Promise<void>;
+  databaseReady?: Promise<void>;
 };
 
 const databaseUrl = path.join(process.cwd(), "prisma", "dev.db");
@@ -26,8 +26,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export async function ensureDatabaseReady() {
-  if (!globalForPrisma.eventTypeTableReady) {
-    globalForPrisma.eventTypeTableReady = (async () => {
+  if (!globalForPrisma.databaseReady) {
+    globalForPrisma.databaseReady = (async () => {
       await prisma.$executeRawUnsafe(`
         CREATE TABLE IF NOT EXISTS "EventType" (
           "id" TEXT NOT NULL PRIMARY KEY,
@@ -43,8 +43,26 @@ export async function ensureDatabaseReady() {
         CREATE UNIQUE INDEX IF NOT EXISTS "EventType_slug_key"
         ON "EventType"("slug")
       `);
+
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS "Availability" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "dayOfWeek" INTEGER NOT NULL,
+          "enabled" BOOLEAN NOT NULL DEFAULT false,
+          "startTime" TEXT NOT NULL,
+          "endTime" TEXT NOT NULL,
+          "timezone" TEXT NOT NULL,
+          "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          "updatedAt" DATETIME NOT NULL
+        )
+      `);
+
+      await prisma.$executeRawUnsafe(`
+        CREATE UNIQUE INDEX IF NOT EXISTS "Availability_dayOfWeek_key"
+        ON "Availability"("dayOfWeek")
+      `);
     })();
   }
 
-  await globalForPrisma.eventTypeTableReady;
+  await globalForPrisma.databaseReady;
 }

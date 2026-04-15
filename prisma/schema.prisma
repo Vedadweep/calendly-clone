@@ -19,3 +19,14 @@ model EventType {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
+
+model Availability {
+  id        String   @id @default(cuid())
+  dayOfWeek Int      @unique
+  enabled   Boolean  @default(false)
+  startTime String
+  endTime   String
+  timezone  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

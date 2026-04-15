@@ -44,16 +44,6 @@ calendly-clone/
 |-- package.json  # Scripts and project dependencies
 ```
 
-## Screenshots
-
-Add project screenshots here before final submission.
-
-- Home page
-- Event types page
-- Availability page
-- Booking page
-- Meetings dashboard
-
 ## Future Improvements
 
 - Add authentication and user account management

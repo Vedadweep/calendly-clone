@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Calendly Clone
 
-## Getting Started
+A full-stack scheduling web application inspired by Calendly. This project helps users create event types, set weekly availability, accept bookings, and manage scheduled meetings through a clean and responsive interface.
 
-First, run the development server:
+## Description
+
+Calendly Clone is a college-level full-stack web application built to demonstrate practical concepts in modern web development, including routing, API handling, database integration, and responsive UI design.
+
+## Features
+
+- Event type creation
+- Availability scheduling
+- Booking system
+- Meeting dashboard
+- Dark mode UI
+- Responsive design
+
+## Tech Stack
+
+- Next.js
+- React
+- Prisma
+- Tailwind CSS
+
+## Installation
+
+Run the following commands to install dependencies and start the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After starting the server, open `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Folder Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+calendly-clone/
+|-- app/          # Application routes, pages, API endpoints, and UI providers
+|-- lib/          # Utility functions and business logic
+|-- prisma/       # Prisma schema and local database files
+|-- public/       # Static assets
+|-- package.json  # Scripts and project dependencies
+```
 
-## Learn More
+## Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+Add project screenshots here before final submission.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Home page
+- Event types page
+- Availability page
+- Booking page
+- Meetings dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Future Improvements
 
-## Deploy on Vercel
+- Add authentication and user account management
+- Integrate calendar syncing with Google Calendar or Outlook
+- Add email confirmations and reminders
+- Support rescheduling and cancellation flows
+- Improve dashboard analytics and reporting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Summary
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project presents a professional scheduling platform inspired by Calendly and built with a modern full-stack JavaScript workflow. It is suitable for a college project submission and showcases both frontend and backend implementation in a practical real-world use case.

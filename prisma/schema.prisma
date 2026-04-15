@@ -18,6 +18,7 @@ model EventType {
   durationInMinutes Int
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  bookings          Booking[]
 }
 
 model Availability {
@@ -29,4 +30,15 @@ model Availability {
   timezone  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id          String    @id @default(cuid())
+  guestName   String
+  guestEmail  String
+  startTime   DateTime  @unique
+  endTime     DateTime
+  createdAt   DateTime  @default(now())
+  eventTypeId String
+  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
 }

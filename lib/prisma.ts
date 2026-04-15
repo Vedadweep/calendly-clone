@@ -61,6 +61,26 @@ export async function ensureDatabaseReady() {
         CREATE UNIQUE INDEX IF NOT EXISTS "Availability_dayOfWeek_key"
         ON "Availability"("dayOfWeek")
       `);
+
+      await prisma.$executeRawUnsafe(`
+        CREATE TABLE IF NOT EXISTS "Booking" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "guestName" TEXT NOT NULL,
+          "guestEmail" TEXT NOT NULL,
+          "startTime" DATETIME NOT NULL,
+          "endTime" DATETIME NOT NULL,
+          "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          "eventTypeId" TEXT NOT NULL,
+          CONSTRAINT "Booking_eventTypeId_fkey"
+            FOREIGN KEY ("eventTypeId") REFERENCES "EventType" ("id")
+            ON DELETE CASCADE ON UPDATE CASCADE
+        )
+      `);
+
+      await prisma.$executeRawUnsafe(`
+        CREATE UNIQUE INDEX IF NOT EXISTS "Booking_startTime_key"
+        ON "Booking"("startTime")
+      `);
     })();
   }
 

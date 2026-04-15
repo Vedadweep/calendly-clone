@@ -293,7 +293,7 @@ export function EventTypesDashboard() {
                       Booking URL
                     </div>
                     <div className="mt-2 break-all text-sm font-medium text-slate-700">
-                      calendly-clone.local/{eventType.slug}
+                      calendly-clone.local/book/{eventType.slug}
                     </div>
                   </div>
                 </div>
@@ -400,7 +400,7 @@ export function EventTypesDashboard() {
               <div className="rounded-2xl bg-slate-50 px-4 py-4 text-sm text-slate-600">
                 Booking link preview:
                 <span className="ml-2 font-medium text-slate-900">
-                  calendly-clone.local/{slugifyEventType(form.slug || form.name) || "your-event"}
+                  calendly-clone.local/book/{slugifyEventType(form.slug || form.name) || "your-event"}
                 </span>
               </div>
 

@@ -240,7 +240,7 @@ export function EventTypesDashboard() {
                   Event Type Dashboard
                 </div>
                 <div className="space-y-4">
-                  <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
+                  <h1 className="max-w-2xl text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-[2.8rem]">
                     Design booking options your guests can trust.
                   </h1>
                   <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
@@ -298,7 +298,7 @@ export function EventTypesDashboard() {
                 <div className="empty-state-icon mx-auto flex h-16 w-16 items-center justify-center rounded-[22px]">
                   <CalendarGlyph />
                 </div>
-                <h2 className="mt-6 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+                <h2 className="mt-6 text-2xl font-semibold text-gray-900 dark:text-white">
                   No event types yet
                 </h2>
                 <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-gray-700 dark:text-gray-300">
@@ -317,7 +317,7 @@ export function EventTypesDashboard() {
                 <HoverCard key={eventType.id}>
                     <article className="group surface-panel flex flex-col p-6 sm:p-7">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:bg-slate-800 dark:text-gray-300">
+                        <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-700 dark:bg-slate-800 dark:text-gray-300">
                         {formatDurationLabel(eventType.durationInMinutes)}
                       </div>
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -344,7 +344,7 @@ export function EventTypesDashboard() {
                     </div>
 
                     <div className="mt-7 space-y-3">
-                      <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+                      <h2 className="text-[1.75rem] font-semibold tracking-tight text-gray-900 dark:text-white">
                         {eventType.name}
                       </h2>
                       <p className="text-sm text-gray-700 dark:text-gray-300">/{eventType.slug}</p>
@@ -358,10 +358,10 @@ export function EventTypesDashboard() {
                     <div className="mt-auto pt-8">
                       <div className="muted-panel flex flex-col gap-3 px-4 py-4">
                         <div>
-                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-600 dark:text-gray-400">
+                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-700 dark:text-gray-300">
                             Booking URL
                           </div>
-                          <div className="mt-2 break-all text-sm font-medium text-slate-700 dark:text-slate-200">
+                          <div className="mt-2 break-all text-sm font-medium text-gray-900 dark:text-white">
                             /book/{eventType.slug}
                           </div>
                         </div>
@@ -401,7 +401,7 @@ export function EventTypesDashboard() {
                 <p className="text-sm font-medium text-[var(--primary)]">
                   {activeEventType ? "Edit event type" : "Create event type"}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+                <h2 className="mt-2 text-2xl font-semibold text-gray-900 dark:text-white">
                   {activeEventType
                     ? "Update booking details"
                     : "Build a new booking experience"}
@@ -410,7 +410,7 @@ export function EventTypesDashboard() {
               <MotionButton
                 type="button"
                 onClick={closeModal}
-                className="rounded-full border border-slate-200 p-2 text-gray-600 transition hover:bg-slate-50 hover:text-gray-900 dark:border-slate-700 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                className="rounded-full border border-slate-200 p-2 text-gray-700 transition hover:bg-slate-50 hover:text-gray-900 dark:border-slate-700 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
                 aria-label="Close modal"
               >
                 <CloseGlyph />
@@ -419,7 +419,7 @@ export function EventTypesDashboard() {
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
               <label className="block space-y-2">
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Event name
                 </span>
                 <input
@@ -448,7 +448,7 @@ export function EventTypesDashboard() {
 
               <div className="grid gap-5 sm:grid-cols-[1.2fr_0.8fr]">
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Slug</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Slug</span>
                   <input
                     type="text"
                     value={form.slug}
@@ -465,7 +465,7 @@ export function EventTypesDashboard() {
                 </label>
 
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     Duration
                   </span>
                   <select
@@ -489,7 +489,7 @@ export function EventTypesDashboard() {
 
               <div className="muted-panel break-words px-4 py-4 text-sm text-gray-700 dark:text-gray-300">
                 Booking link preview:
-                <span className="ml-2 break-all font-medium text-slate-900 dark:text-slate-100">
+                <span className="ml-2 break-all font-medium text-gray-900 dark:text-white">
                   calendly-clone.local/book/{slugifyEventType(form.slug || form.name) || "your-event"}
                 </span>
               </div>
@@ -528,10 +528,10 @@ function HeroMetric({ label, value }: { label: string; value: string }) {
   return (
     <HoverCard>
       <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 text-gray-900 shadow-[0_16px_34px_rgba(15,23,42,0.06)] dark:text-white">
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-600 dark:text-gray-400">
+        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-700 dark:text-gray-300">
           {label}
         </div>
-        <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+        <div className="mt-3 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {value}
         </div>
       </div>

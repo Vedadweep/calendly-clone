@@ -141,7 +141,7 @@ export function AvailabilityDashboard() {
                 <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                   Availability
                 </div>
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
+                <h1 className="max-w-2xl text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-[2.8rem]">
                   Set when people can book with you.
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
@@ -178,8 +178,8 @@ export function AvailabilityDashboard() {
           <section className="surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Timezone</h2>
-                <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
+                <h2 className="text-xl font-semibold text-white">Timezone</h2>
+                <p className="text-sm leading-7 text-gray-300">
                   All working hours below will be saved in this timezone.
                 </p>
               </div>
@@ -212,8 +212,8 @@ export function AvailabilityDashboard() {
           <Reveal delay={0.06}>
           <section className="surface-panel p-6 sm:p-8">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Weekly hours</h2>
-              <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
+              <h2 className="text-xl font-semibold text-white">Weekly hours</h2>
+              <p className="text-sm leading-7 text-gray-300">
                 Enable the days you want to take meetings and set a time range for
                 each one.
               </p>
@@ -224,11 +224,11 @@ export function AvailabilityDashboard() {
                 ? Array.from({ length: 7 }).map((_, index) => (
                     <div
                       key={index}
-                      className="grid animate-pulse gap-4 rounded-[24px] border border-slate-100 bg-slate-50 px-4 py-5 md:grid-cols-[1.1fr_0.9fr_0.9fr]"
+                      className="grid animate-pulse gap-4 rounded-[24px] border border-slate-800 bg-black px-4 py-5 md:grid-cols-[1.1fr_0.9fr_0.9fr]"
                     >
-                      <div className="h-11 rounded-2xl bg-slate-200" />
-                      <div className="h-11 rounded-2xl bg-slate-200" />
-                      <div className="h-11 rounded-2xl bg-slate-200" />
+                      <div className="h-11 rounded-2xl bg-slate-900" />
+                      <div className="h-11 rounded-2xl bg-slate-900" />
+                      <div className="h-11 rounded-2xl bg-slate-900" />
                     </div>
                   ))
                 : WEEKDAY_OPTIONS.map((weekday) => {
@@ -243,14 +243,14 @@ export function AvailabilityDashboard() {
                     return (
                       <HoverCard key={weekday.value} hoverScale={1.02}>
                       <div
-                        className="grid gap-4 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(249,251,255,0.95),rgba(244,248,252,0.92))] px-4 py-5 shadow-[0_14px_34px_rgba(15,23,42,0.04)] md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] sm:px-5"
+                        className="grid gap-4 rounded-[24px] border border-slate-800 bg-black px-4 py-5 shadow-[0_14px_34px_rgba(2,6,23,0.3)] md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] sm:px-5"
                       >
-                        <div className="flex items-center justify-between gap-4 rounded-[20px] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                        <div className="flex items-center justify-between gap-4 rounded-[20px] bg-slate-900 px-4 py-3 shadow-[0_10px_24px_rgba(2,6,23,0.24)]">
                           <div>
-                            <div className="text-sm font-semibold text-slate-950 dark:text-slate-50">
+                            <div className="text-sm font-semibold text-white">
                               {weekday.label}
                             </div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400">
+                            <div className="text-xs text-gray-300">
                               {day.enabled ? "Available" : "Unavailable"}
                             </div>
                           </div>
@@ -267,7 +267,7 @@ export function AvailabilityDashboard() {
                             className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${
                               day.enabled
                                 ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] shadow-[0_12px_20px_rgba(0,107,255,0.22)]"
-                                : "bg-slate-300"
+                                : "bg-slate-700"
                             }`}
                           >
                             <span
@@ -279,7 +279,7 @@ export function AvailabilityDashboard() {
                         </div>
 
                         <label className="block space-y-2">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          <span className="text-sm font-medium text-gray-300">
                             Start time
                           </span>
                           <input
@@ -297,7 +297,7 @@ export function AvailabilityDashboard() {
                         </label>
 
                         <label className="block space-y-2">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          <span className="text-sm font-medium text-gray-300">
                             End time
                           </span>
                           <input

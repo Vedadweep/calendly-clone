@@ -235,7 +235,7 @@ export function BookingPageClient({
                 Public Booking Page
               </div>
               <div className="space-y-2">
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-[2.8rem]">
+                <h1 className="max-w-2xl text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl lg:text-[2.8rem]">
                   {eventType.name}
                 </h1>
                 <p className="max-w-2xl text-base leading-8 text-gray-700 dark:text-gray-300 sm:text-lg">
@@ -273,7 +273,7 @@ export function BookingPageClient({
             <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
               Booking Confirmed
             </div>
-            <h2 className="mt-4 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+            <h2 className="mt-4 text-2xl font-semibold text-gray-900 dark:text-white">
               {confirmation.guestName}, you&apos;re booked.
             </h2>
             <p className="mt-3 text-base leading-8 text-gray-700 dark:text-gray-300">
@@ -288,7 +288,7 @@ export function BookingPageClient({
           <HoverCard>
           <div className="surface-panel p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Select a date</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Select a date</h2>
               <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                 Available days are based on the host&apos;s weekly schedule.
               </p>
@@ -319,7 +319,7 @@ export function BookingPageClient({
           <div className="surface-panel min-w-0 p-5 sm:p-6">
             <div className="flex flex-col gap-2 border-b border-slate-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-slate-950 dark:text-slate-50">Available times</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Available times</h2>
                 <p className="text-sm leading-7 text-gray-700 dark:text-gray-300">
                   {format(selectedDate, "EEEE, MMMM d")}
                 </p>
@@ -342,7 +342,7 @@ export function BookingPageClient({
                   <div className="empty-state-icon mx-auto flex h-14 w-14 items-center justify-center rounded-[20px]">
                     <CalendarIcon />
                   </div>
-                  <div className="mt-4 text-lg font-semibold text-slate-950 dark:text-slate-50">
+                  <div className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
                     No time slots available
                   </div>
                   <p className="mt-2 text-sm leading-7 text-gray-700 dark:text-gray-300">
@@ -407,7 +407,7 @@ export function BookingPageClient({
 
             <form className="mt-8 space-y-4 border-t border-slate-100 pt-6" onSubmit={handleBookingSubmit}>
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">Your details</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Your details</h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {selectedTime
                     ? `Booking ${format(selectedDate, "MMMM d")} at ${
@@ -504,7 +504,7 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
         <div className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-700 dark:text-gray-300">
           {label}
         </div>
-        <div className="mt-2 text-base font-semibold text-slate-950 dark:text-slate-50">{value}</div>
+        <div className="mt-2 text-base font-semibold text-gray-900 dark:text-white">{value}</div>
       </div>
     </HoverCard>
   );

@@ -9,7 +9,6 @@ import {
   ScrollShadowHeader,
   interactionTransition,
 } from "@/app/motion-provider";
-import { useTheme } from "@/app/ui/theme-provider";
 
 type DashboardShellProps = {
   children: React.ReactNode;
@@ -37,33 +36,24 @@ const navigationItems = [
 export function DashboardShell({ children }: DashboardShellProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { toggleTheme } = useTheme();
 
   return (
     <div className="flex min-h-screen flex-col">
-      <ScrollShadowHeader className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/78 backdrop-blur-2xl dark:border-slate-800/70 dark:bg-slate-950/68">
+      <ScrollShadowHeader className="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/68 backdrop-blur-2xl">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-start justify-between gap-4 lg:items-center">
             <div className="space-y-1">
               <Link
                 href="/"
-                className="inline-flex rounded-full px-1 py-0.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--primary)] transition hover:text-[var(--primary-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 dark:text-blue-100 dark:hover:text-blue-200"
+                className="inline-flex rounded-full px-1 py-0.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-100 transition hover:text-blue-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
               >
                 Cal Studio
               </Link>
-              <h1 className="text-xl font-semibold text-slate-950 dark:text-slate-50 sm:text-[1.35rem]">
+              <h1 className="text-xl font-bold text-white sm:text-[1.35rem]">
                 Scheduling Dashboard
               </h1>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="theme-toggle h-11 w-11"
-                aria-label="Toggle color theme"
-              >
-                <ThemeGlyph />
-              </button>
               <button
                 type="button"
                 aria-expanded={isMobileMenuOpen}
@@ -96,8 +86,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`block rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
                         isActive
-                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)] dark:text-white"
-                          : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
+                          : "text-gray-300 hover:bg-slate-900 hover:text-white"
                       }`}
                     >
                       {item.label}
@@ -106,7 +96,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 );
               })}
             </nav>
-            <div className="rounded-full border border-blue-100 bg-blue-50/80 px-4 py-2 text-sm font-medium text-blue-900 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-100">
+            <div className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-100">
               Smooth scheduling, clearer decisions
             </div>
           </div>
@@ -135,8 +125,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`block rounded-2xl px-4 py-3 text-center text-sm font-semibold transition ${
                         isActive
-                            ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)] dark:text-white"
-                            : "text-gray-700 hover:bg-slate-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                            ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
+                          : "text-gray-300 hover:bg-slate-900 hover:text-white"
                         }`}
                       >
                         {item.label}
@@ -144,8 +134,8 @@ export function DashboardShell({ children }: DashboardShellProps) {
                     </InteractiveShell>
                   );
                 })}
-                <div className="rounded-[20px] bg-[var(--panel-muted)] px-4 py-3 text-sm leading-6 text-gray-700 dark:text-gray-300">
-                  Switch themes, jump home quickly, and manage bookings from a cleaner mobile menu.
+                <div className="rounded-[20px] bg-[var(--panel-muted)] px-4 py-3 text-sm leading-6 text-gray-300">
+                  Jump home quickly and manage bookings from a cleaner mobile menu.
                 </div>
               </motion.nav>
             ) : null}
@@ -155,31 +145,6 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
       {children}
     </div>
-  );
-}
-
-function ThemeGlyph() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 3v2.5" />
-      <path d="M12 18.5V21" />
-      <path d="m5.64 5.64 1.77 1.77" />
-      <path d="m16.59 16.59 1.77 1.77" />
-      <path d="M3 12h2.5" />
-      <path d="M18.5 12H21" />
-      <path d="m5.64 18.36 1.77-1.77" />
-      <path d="m16.59 7.41 1.77-1.77" />
-      <path d="M15.5 15.5A5.5 5.5 0 0 1 8.7 7.3a5.5 5.5 0 1 0 6.8 8.2Z" />
-    </svg>
   );
 }
 

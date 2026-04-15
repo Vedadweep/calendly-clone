@@ -92,10 +92,10 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                   <div
                     className={`rounded-[24px] border px-4 py-4 shadow-[var(--shadow-float)] backdrop-blur-xl ${
                       toast.tone === "error"
-                        ? "border-red-200/80 bg-white/96 text-red-700 dark:border-red-500/30 dark:bg-slate-900/96 dark:text-red-200"
+                        ? "border-red-500/30 bg-slate-900/96 text-red-200"
                         : toast.tone === "info"
-                          ? "border-blue-200/80 bg-white/96 text-blue-700 dark:border-blue-500/30 dark:bg-slate-900/96 dark:text-blue-200"
-                          : "border-emerald-200/80 bg-white/96 text-emerald-700 dark:border-emerald-500/30 dark:bg-slate-900/96 dark:text-emerald-200"
+                          ? "border-blue-500/30 bg-slate-900/96 text-blue-200"
+                          : "border-emerald-500/30 bg-slate-900/96 text-emerald-200"
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -108,7 +108,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                       <MotionButton
                         type="button"
                         onClick={() => dismissToast(toast.id)}
-                        className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-current transition hover:bg-black/5 hover:text-current dark:hover:bg-white/8"
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-current transition hover:bg-white/8 hover:text-current"
                         aria-label="Dismiss toast"
                       >
                         <CloseIcon />
@@ -135,15 +135,15 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.98 }}
                 transition={interactionTransition}
-                className="w-full max-w-md rounded-[30px] border border-white/80 bg-white p-6 shadow-[var(--shadow-float)] dark:border-slate-700 dark:bg-slate-900 sm:p-7"
+                className="w-full max-w-md rounded-[30px] border border-slate-700 bg-slate-900 p-6 shadow-[var(--shadow-float)] sm:p-7"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-red-50 text-red-600 dark:bg-red-500/12 dark:text-red-200">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-red-500/12 text-red-200">
                   <WarningIcon />
                 </div>
-                <h2 className="mt-5 text-2xl font-semibold text-slate-950 dark:text-slate-50">
+                <h2 className="mt-5 text-2xl font-semibold text-white">
                   {confirmState.options.title ?? "Are you sure?"}
                 </h2>
-                <p className="mt-3 text-sm leading-7 text-gray-700 dark:text-gray-300">
+                <p className="mt-3 text-sm leading-7 text-gray-300">
                   {confirmState.options.description}
                 </p>
 

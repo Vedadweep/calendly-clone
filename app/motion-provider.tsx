@@ -52,7 +52,7 @@ export function MotionProvider({ children }: ChildrenProps) {
 export function AnimatedPage({ children, className }: AnimatedPageProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={pageTransition}
       className={className}
@@ -65,7 +65,7 @@ export function AnimatedPage({ children, className }: AnimatedPageProps) {
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 1, y: 0 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2, margin: "0px 0px -80px 0px" }}
       transition={{ ...revealTransition, delay }}

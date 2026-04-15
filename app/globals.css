@@ -1,31 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f9fc;
-  --foreground: #17314f;
-  --panel: #ffffff;
-  --panel-muted: #f2f7fd;
-  --panel-subtle: rgba(255, 255, 255, 0.72);
-  --border: #d9e5f2;
-  --primary: #006bff;
-  --primary-strong: #0050d4;
-  --accent: #e6f0ff;
-  --danger: #d14343;
-  --success: #14804a;
-  --shadow-soft: 0 18px 44px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 24px 70px rgba(15, 23, 42, 0.07);
-  --shadow-float: 0 30px 90px rgba(15, 23, 42, 0.12);
-  --radius-panel: 32px;
-  --radius-card: 26px;
-  --radius-control: 18px;
-}
-
-.dark {
-  --background: #07111f;
-  --foreground: #e2edf8;
-  --panel: rgba(9, 19, 34, 0.88);
-  --panel-muted: rgba(21, 37, 61, 0.9);
-  --panel-subtle: rgba(8, 18, 34, 0.72);
+  color-scheme: dark;
+  --background: #020617;
+  --foreground: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --panel: rgba(9, 19, 34, 0.92);
+  --panel-muted: rgba(17, 30, 51, 0.94);
+  --panel-subtle: rgba(8, 18, 34, 0.78);
   --border: rgba(106, 131, 169, 0.28);
   --primary: #60a5fa;
   --primary-strong: #8fc5ff;
@@ -35,6 +19,9 @@
   --shadow-soft: 0 18px 44px rgba(2, 6, 23, 0.28);
   --shadow-card: 0 24px 70px rgba(2, 6, 23, 0.34);
   --shadow-float: 0 30px 90px rgba(2, 6, 23, 0.45);
+  --radius-panel: 32px;
+  --radius-card: 26px;
+  --radius-control: 18px;
 }
 
 @theme inline {
@@ -51,31 +38,20 @@
 html {
   min-height: 100%;
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  background-image:
-    radial-gradient(circle at top left, rgba(0, 107, 255, 0.12), transparent 28rem),
-    radial-gradient(circle at 100% 0%, rgba(116, 174, 255, 0.18), transparent 24rem),
-    linear-gradient(180deg, #fbfdff 0%, #f6f9fc 40%, #f3f7fb 100%);
+  background:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.12), transparent 22rem),
+    linear-gradient(180deg, #020617 0%, #07111f 42%, #08101d 100%);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
   overflow-x: hidden;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    background-image 0.3s ease;
-}
-
-.dark body {
-  background-image:
-    radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 28rem),
-    radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.12), transparent 22rem),
-    linear-gradient(180deg, #07111f 0%, #091524 40%, #08101d 100%);
 }
 
 h1,
@@ -94,6 +70,7 @@ button,
 input,
 select,
 textarea {
+  min-width: 0;
   font: inherit;
 }
 
@@ -106,7 +83,6 @@ a,
 input,
 select,
 textarea {
-  min-width: 0;
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
@@ -124,11 +100,6 @@ h4 {
 
 input::placeholder,
 textarea::placeholder {
-  color: #94a3b8;
-}
-
-.dark input::placeholder,
-.dark textarea::placeholder {
   color: #7b90b4;
 }
 
@@ -149,14 +120,14 @@ textarea::placeholder {
 
 .hero-panel {
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border) 82%, white);
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
   border-radius: var(--radius-panel);
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--panel) 98%, white), color-mix(in srgb, var(--panel) 92%, transparent)),
-    radial-gradient(circle at top right, rgba(0, 107, 255, 0.08), transparent 18rem);
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 98%, transparent), color-mix(in srgb, var(--panel) 90%, transparent)),
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.1), transparent 18rem);
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(18px);
-  color: var(--foreground);
+  color: var(--text-primary);
 }
 
 .surface-panel {
@@ -165,26 +136,26 @@ textarea::placeholder {
   background: var(--panel);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(18px);
-  color: var(--foreground);
+  color: var(--text-primary);
 }
 
 .muted-panel {
   border-radius: 22px;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--panel-muted) 94%, white) 0%,
+    color-mix(in srgb, var(--panel-muted) 96%, transparent) 0%,
     color-mix(in srgb, var(--panel-muted) 100%, transparent) 100%
   );
-  color: var(--foreground);
+  color: var(--text-primary);
 }
 
 .field-control {
   width: 100%;
-  border: 1px solid color-mix(in srgb, var(--border) 88%, white);
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
   border-radius: var(--radius-control);
-  background: color-mix(in srgb, var(--panel) 98%, white);
+  background: color-mix(in srgb, var(--panel) 98%, transparent);
   padding: 0.9rem 1rem;
-  color: var(--foreground);
+  color: var(--text-primary);
   outline: none;
   transition:
     border-color 0.2s ease,
@@ -193,13 +164,13 @@ textarea::placeholder {
 }
 
 .field-control[aria-invalid="true"] {
-  border-color: color-mix(in srgb, var(--danger) 58%, white);
+  border-color: color-mix(in srgb, var(--danger) 58%, transparent);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 16%, transparent);
 }
 
 .field-control:focus {
-  border-color: color-mix(in srgb, var(--primary) 65%, white);
-  box-shadow: 0 0 0 4px rgba(0, 107, 255, 0.12);
+  border-color: color-mix(in srgb, var(--primary) 65%, transparent);
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.18);
 }
 
 .field-control:disabled {
@@ -237,7 +208,7 @@ textarea::placeholder {
 .theme-toggle:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--accent) 92%, white),
+    0 0 0 4px color-mix(in srgb, var(--accent) 92%, transparent),
     0 10px 28px rgba(15, 23, 42, 0.12);
 }
 
@@ -247,9 +218,9 @@ textarea::placeholder {
   justify-content: center;
   min-width: 0;
   border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--border) 88%, white);
-  background: color-mix(in srgb, var(--panel) 96%, white);
-  color: color-mix(in srgb, var(--foreground) 90%, #475569);
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  background: color-mix(in srgb, var(--panel) 96%, transparent);
+  color: color-mix(in srgb, var(--foreground) 92%, #cbd5e1);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -262,7 +233,7 @@ textarea::placeholder {
   border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
   background: color-mix(in srgb, var(--accent) 72%, var(--panel));
   filter: brightness(1.03);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
 }
 
 .button-danger {
@@ -271,8 +242,8 @@ textarea::placeholder {
   justify-content: center;
   min-width: 0;
   border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--danger) 34%, white);
-  background: color-mix(in srgb, var(--panel) 98%, white);
+  border: 1px solid color-mix(in srgb, var(--danger) 34%, transparent);
+  background: color-mix(in srgb, var(--panel) 98%, transparent);
   color: var(--danger);
   transition: background-color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
 }
@@ -320,21 +291,16 @@ textarea::placeholder {
   min-width: 2.75rem;
   border: 0;
   border-radius: 1rem;
-  background: color-mix(in srgb, var(--panel-muted) 98%, white);
+  background: color-mix(in srgb, var(--panel-muted) 98%, transparent);
   color: var(--foreground);
   font-weight: 600;
   padding: 0.75rem 0.9rem;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .booking-calendar .react-calendar__navigation button:hover,
 .booking-calendar .react-calendar__navigation button:focus-visible {
-  background: white;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  background: rgba(30, 41, 59, 0.92);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
   outline: none;
 }
 
@@ -344,7 +310,7 @@ textarea::placeholder {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: color-mix(in srgb, var(--foreground) 68%, #64748b);
+  color: var(--text-muted);
 }
 
 .booking-calendar .react-calendar__month-view__weekdays__weekday {
@@ -367,22 +333,17 @@ textarea::placeholder {
   color: var(--foreground);
   padding: 0.95rem 0.5rem;
   font-weight: 600;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .booking-calendar .react-calendar__tile:hover,
 .booking-calendar .react-calendar__tile:focus-visible {
-  background: color-mix(in srgb, var(--accent) 92%, white);
+  background: color-mix(in srgb, var(--accent) 92%, transparent);
   color: var(--primary);
   outline: none;
 }
 
 .booking-calendar .react-calendar__tile--now {
-  background: color-mix(in srgb, var(--accent) 88%, white);
+  background: color-mix(in srgb, var(--accent) 88%, transparent);
   color: var(--primary-strong);
 }
 
@@ -406,14 +367,14 @@ textarea::placeholder {
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
   background: color-mix(in srgb, var(--panel-subtle) 95%, transparent);
-  color: color-mix(in srgb, var(--foreground) 90%, #475569);
+  color: color-mix(in srgb, var(--foreground) 92%, #cbd5e1);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(16px);
 }
 
 .theme-toggle:hover {
   transform: translateY(-1px);
-  background: color-mix(in srgb, var(--panel) 98%, white);
+  background: color-mix(in srgb, var(--panel) 98%, transparent);
   color: var(--foreground);
 }
 
@@ -427,7 +388,7 @@ textarea::placeholder {
 .helper-text {
   font-size: 0.85rem;
   line-height: 1.5;
-  color: color-mix(in srgb, var(--foreground) 74%, #475569);
+  color: var(--text-secondary);
 }
 
 .error-text {
@@ -441,64 +402,99 @@ textarea::placeholder {
   border-radius: 30px;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--panel) 96%, white) 0%,
+    color-mix(in srgb, var(--panel) 96%, transparent) 0%,
     color-mix(in srgb, var(--panel-muted) 78%, transparent) 100%
   );
-  color: var(--foreground);
+  color: var(--text-primary);
 }
 
 .empty-state-icon {
-  background: color-mix(in srgb, var(--panel) 88%, white);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
   color: var(--primary);
   box-shadow: var(--shadow-soft);
 }
 
-.dark .bg-white,
-.dark .bg-white\/80,
-.dark .bg-white\/85,
-.dark .bg-white\/90,
-.dark .bg-white\/92,
-.dark .bg-white\/96,
-.dark .bg-white\/98 {
+.bg-white,
+.bg-white\/80,
+.bg-white\/85,
+.bg-white\/90,
+.bg-white\/92,
+.bg-white\/96,
+.bg-white\/98 {
   background-color: rgba(10, 19, 35, 0.92) !important;
 }
 
-.dark .bg-slate-50,
-.dark .bg-slate-50\/70,
-.dark .bg-slate-50\/80,
-.dark .bg-slate-100 {
+.bg-slate-50,
+.bg-slate-50\/70,
+.bg-slate-50\/80,
+.bg-slate-100 {
   background-color: rgba(20, 32, 51, 0.88) !important;
 }
 
-.dark .border-slate-100,
-.dark .border-slate-200,
-.dark .border-slate-200\/70,
-.dark .border-slate-200\/80,
-.dark .border-slate-200\/90,
-.dark .border-slate-300 {
+.bg-slate-950 {
+  background-color: #020617 !important;
+}
+
+.border-slate-100,
+.border-slate-200,
+.border-slate-200\/70,
+.border-slate-200\/80,
+.border-slate-200\/90,
+.border-slate-300,
+.border-white,
+.border-white\/70,
+.border-white\/80 {
   border-color: rgba(103, 123, 156, 0.26) !important;
 }
 
-.dark .bg-red-50 {
+.bg-red-50 {
   background-color: rgba(127, 29, 29, 0.18) !important;
 }
 
-.dark .border-red-200 {
+.border-red-200,
+.border-red-200\/80 {
   border-color: rgba(248, 113, 113, 0.26) !important;
 }
 
-.dark .text-red-700 {
+.text-red-700 {
   color: #fecaca !important;
 }
 
-.dark .bg-emerald-50 {
+.bg-emerald-50 {
   background-color: rgba(6, 78, 59, 0.18) !important;
 }
 
-.dark .border-emerald-200 {
+.border-emerald-200,
+.border-emerald-200\/80 {
   border-color: rgba(74, 222, 128, 0.24) !important;
 }
 
-.dark .text-emerald-700 {
+.text-emerald-700 {
   color: #bbf7d0 !important;
+}
+
+.border-blue-100,
+.border-blue-200,
+.border-blue-200\/80 {
+  border-color: rgba(96, 165, 250, 0.26) !important;
+}
+
+.bg-blue-50,
+.bg-blue-50\/70,
+.bg-blue-50\/80 {
+  background-color: rgba(37, 99, 235, 0.14) !important;
+}
+
+.text-gray-900,
+.text-black {
+  color: #ffffff !important;
+}
+
+.text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+.text-gray-300,
+.text-gray-400 {
+  color: #94a3b8 !important;
 }

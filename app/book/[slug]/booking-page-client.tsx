@@ -12,6 +12,7 @@ import {
   Reveal,
   interactionTransition,
 } from "@/app/motion-provider";
+import { useToast } from "@/app/ui/feedback-provider";
 import { formatDurationLabel } from "@/lib/event-types";
 
 type EventTypeDetails = {
@@ -84,6 +85,7 @@ export function BookingPageClient({
   );
   const [isLoadingSlots, setIsLoadingSlots] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const { showToast } = useToast();
 
   async function loadSlots(date: Date, preserveConfirmation = false) {
     setIsLoadingSlots(true);
@@ -179,6 +181,7 @@ export function BookingPageClient({
         setName("");
         setEmail("");
         setSelectedTime(null);
+        showToast("Booking successful");
         await loadSlots(selectedDate, true);
       })().catch((submitError) => {
         setError(
@@ -305,8 +308,11 @@ export function BookingPageClient({
                   ))}
                 </div>
               ) : slots.length === 0 ? (
-                <div className="rounded-[24px] border border-dashed border-slate-200 bg-slate-50 px-5 py-10 text-center">
-                  <div className="text-lg font-semibold text-slate-950">
+                <div className="empty-state px-5 py-10 text-center">
+                  <div className="empty-state-icon mx-auto flex h-14 w-14 items-center justify-center rounded-[20px]">
+                    <CalendarIcon />
+                  </div>
+                  <div className="mt-4 text-lg font-semibold text-slate-950">
                     No time slots available
                   </div>
                   <p className="mt-2 text-sm leading-7 text-slate-600">
@@ -399,6 +405,26 @@ export function BookingPageClient({
       </div>
     </main>
     </AnimatedPage>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8 2v4" />
+      <path d="M16 2v4" />
+      <rect x="3" y="5" width="18" height="16" rx="3" />
+      <path d="M3 10h18" />
+    </svg>
   );
 }
 

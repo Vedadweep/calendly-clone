@@ -1,6 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
+import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 
 import { DashboardShell } from "@/app/dashboard-shell";
@@ -10,6 +11,7 @@ import {
   MotionButton,
   Reveal,
 } from "@/app/motion-provider";
+import { useConfirm, useToast } from "@/app/ui/feedback-provider";
 import type { MeetingRecord } from "@/lib/bookings";
 
 type MeetingsDashboardProps = {
@@ -23,6 +25,8 @@ export function MeetingsDashboard({
   const [error, setError] = useState<string | null>(null);
   const [activeMeetingId, setActiveMeetingId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { showToast } = useToast();
+  const { confirm } = useConfirm();
 
   const { upcomingMeetings, pastMeetings } = useMemo(() => {
     const now = new Date();
@@ -44,10 +48,14 @@ export function MeetingsDashboard({
     );
   }, [meetings]);
 
-  function handleCancel(meeting: MeetingRecord) {
-    const confirmed = window.confirm(
-      `Cancel ${meeting.eventName} with ${meeting.inviteeName}?`,
-    );
+  async function handleCancel(meeting: MeetingRecord) {
+    const confirmed = await confirm({
+      title: "Are you sure you want to delete?",
+      description: `This will cancel ${meeting.eventName} with ${meeting.inviteeName}.`,
+      confirmLabel: "Delete",
+      cancelLabel: "Cancel",
+      tone: "danger",
+    });
 
     if (!confirmed) {
       return;
@@ -72,6 +80,7 @@ export function MeetingsDashboard({
         setMeetings((current) =>
           current.filter((currentMeeting) => currentMeeting.id !== meeting.id),
         );
+        showToast("Meeting deleted");
       })().catch((cancelError) => {
         setError(
           cancelError instanceof Error
@@ -195,8 +204,8 @@ function MeetingsSection({
       </div>
 
       {meetings.length === 0 ? (
-        <div className="mt-6 rounded-[26px] border border-dashed border-slate-300 bg-slate-50/70 px-6 py-12 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-white text-[var(--primary)] shadow-[0_12px_28px_rgba(15,23,42,0.06)]">
+        <div className="empty-state mt-6 px-6 py-12 text-center">
+          <div className="empty-state-icon mx-auto flex h-16 w-16 items-center justify-center rounded-[22px]">
             <CalendarGlyph />
           </div>
           <h3 className="mt-5 text-lg font-semibold text-slate-950">
@@ -205,6 +214,14 @@ function MeetingsSection({
           <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
             {emptyDescription}
           </p>
+          {title === "Upcoming" ? (
+            <Link
+              href="/event-types"
+              className="button-primary mt-6 inline-flex px-5 py-3 text-sm font-semibold"
+            >
+              Create your first event
+            </Link>
+          ) : null}
         </div>
       ) : (
         <div className="mt-6 grid gap-4 md:grid-cols-2 2xl:grid-cols-1">

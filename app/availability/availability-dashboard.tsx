@@ -9,6 +9,7 @@ import {
   MotionButton,
   Reveal,
 } from "@/app/motion-provider";
+import { useToast } from "@/app/ui/feedback-provider";
 import {
   TIMEZONE_OPTIONS,
   WEEKDAY_OPTIONS,
@@ -29,8 +30,8 @@ export function AvailabilityDashboard() {
   const [hasExistingAvailability, setHasExistingAvailability] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { showToast } = useToast();
 
   useEffect(() => {
     void loadAvailability();
@@ -81,7 +82,6 @@ export function AvailabilityDashboard() {
 
   async function saveAvailability() {
     setError(null);
-    setSuccessMessage(null);
 
     const payload: AvailabilityPayload = {
       timezone,
@@ -112,7 +112,7 @@ export function AvailabilityDashboard() {
     setTimezone(result?.timezone ?? timezone);
     setDays(result?.days ?? payload.days);
     setHasExistingAvailability(Boolean(result?.hasExistingAvailability ?? true));
-    setSuccessMessage("Availability saved successfully.");
+    showToast("Availability saved");
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -165,14 +165,6 @@ export function AvailabilityDashboard() {
             <Reveal>
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
-            </div>
-            </Reveal>
-          ) : null}
-
-          {successMessage ? (
-            <Reveal>
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-              {successMessage}
             </div>
             </Reveal>
           ) : null}

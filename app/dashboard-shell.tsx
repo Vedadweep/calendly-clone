@@ -9,12 +9,17 @@ import {
   ScrollShadowHeader,
   interactionTransition,
 } from "@/app/motion-provider";
+import { useTheme } from "@/app/ui/theme-provider";
 
 type DashboardShellProps = {
   children: React.ReactNode;
 };
 
 const navigationItems = [
+  {
+    href: "/",
+    label: "Home",
+  },
   {
     href: "/event-types",
     label: "Event Types",
@@ -32,40 +37,54 @@ const navigationItems = [
 export function DashboardShell({ children }: DashboardShellProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { toggleTheme } = useTheme();
 
   return (
     <div className="flex min-h-screen flex-col">
-      <ScrollShadowHeader className="sticky top-0 z-40 border-b border-white/70 bg-white/82 backdrop-blur-2xl">
+      <ScrollShadowHeader className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/78 backdrop-blur-2xl dark:border-slate-800/70 dark:bg-slate-950/68">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-start justify-between gap-4 lg:items-center">
             <div className="space-y-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--primary)]">
-                Calendly Clone
+                Cal Studio
               </p>
               <h1 className="text-xl font-semibold text-slate-950 sm:text-[1.35rem]">
                 Scheduling Dashboard
               </h1>
             </div>
-            <button
-              type="button"
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="dashboard-navigation"
-              aria-label="Toggle navigation menu"
-              onClick={() => setIsMobileMenuOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white/90 text-slate-700 shadow-[0_12px_28px_rgba(15,23,42,0.05)] transition hover:bg-slate-50 lg:hidden"
-            >
-              <MenuGlyph open={isMobileMenuOpen} />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="theme-toggle h-11 w-11"
+                aria-label="Toggle color theme"
+              >
+                <ThemeGlyph />
+              </button>
+              <button
+                type="button"
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="dashboard-navigation"
+                aria-label="Toggle navigation menu"
+                onClick={() => setIsMobileMenuOpen((current) => !current)}
+                className="theme-toggle h-11 w-11 lg:hidden"
+              >
+                <MenuGlyph open={isMobileMenuOpen} />
+              </button>
+            </div>
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden items-center justify-between gap-4 lg:flex">
             <nav
               id="dashboard-navigation"
               aria-label="Dashboard navigation"
-              className="flex w-full flex-col gap-2 rounded-[22px] border border-slate-200/70 bg-white/80 p-1.5 shadow-[0_12px_28px_rgba(15,23,42,0.05)] lg:w-auto lg:flex-row lg:flex-wrap"
+              className="nav-shell flex w-full flex-col gap-2 rounded-[22px] p-1.5 lg:w-auto lg:flex-row lg:flex-wrap"
             >
               {navigationItems.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                 return (
                   <InteractiveShell key={item.href} className="lg:min-w-[8.5rem]">
@@ -84,6 +103,9 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 );
               })}
             </nav>
+            <div className="rounded-full border border-blue-100 bg-blue-50/80 px-4 py-2 text-sm font-medium text-blue-900 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-100">
+              Smooth scheduling, clearer decisions
+            </div>
           </div>
 
           <AnimatePresence initial={false}>
@@ -95,10 +117,13 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={interactionTransition}
-                className="flex w-full flex-col gap-2 overflow-hidden rounded-[22px] border border-slate-200/70 bg-white/80 p-1.5 shadow-[0_12px_28px_rgba(15,23,42,0.05)] lg:hidden"
+                className="nav-shell flex w-full flex-col gap-3 overflow-hidden rounded-[22px] p-3 lg:hidden"
               >
                 {navigationItems.map((item) => {
-                  const isActive = pathname === item.href;
+                  const isActive =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                   return (
                     <InteractiveShell key={item.href}>
@@ -116,6 +141,9 @@ export function DashboardShell({ children }: DashboardShellProps) {
                     </InteractiveShell>
                   );
                 })}
+                <div className="rounded-[20px] bg-[var(--panel-muted)] px-4 py-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  Switch themes, jump home quickly, and manage bookings from a cleaner mobile menu.
+                </div>
               </motion.nav>
             ) : null}
           </AnimatePresence>
@@ -124,6 +152,31 @@ export function DashboardShell({ children }: DashboardShellProps) {
 
       {children}
     </div>
+  );
+}
+
+function ThemeGlyph() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 3v2.5" />
+      <path d="M12 18.5V21" />
+      <path d="m5.64 5.64 1.77 1.77" />
+      <path d="m16.59 16.59 1.77 1.77" />
+      <path d="M3 12h2.5" />
+      <path d="M18.5 12H21" />
+      <path d="m5.64 18.36 1.77-1.77" />
+      <path d="m16.59 7.41 1.77-1.77" />
+      <path d="M15.5 15.5A5.5 5.5 0 0 1 8.7 7.3a5.5 5.5 0 1 0 6.8 8.2Z" />
+    </svg>
   );
 }
 

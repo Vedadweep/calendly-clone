@@ -5,6 +5,7 @@
   --foreground: #17314f;
   --panel: #ffffff;
   --panel-muted: #f2f7fd;
+  --panel-subtle: rgba(255, 255, 255, 0.72);
   --border: #d9e5f2;
   --primary: #006bff;
   --primary-strong: #0050d4;
@@ -17,6 +18,23 @@
   --radius-panel: 32px;
   --radius-card: 26px;
   --radius-control: 18px;
+}
+
+.dark {
+  --background: #07111f;
+  --foreground: #e2edf8;
+  --panel: rgba(9, 19, 34, 0.88);
+  --panel-muted: rgba(21, 37, 61, 0.9);
+  --panel-subtle: rgba(8, 18, 34, 0.72);
+  --border: rgba(106, 131, 169, 0.28);
+  --primary: #60a5fa;
+  --primary-strong: #8fc5ff;
+  --accent: rgba(96, 165, 250, 0.14);
+  --danger: #f87171;
+  --success: #4ade80;
+  --shadow-soft: 0 18px 44px rgba(2, 6, 23, 0.28);
+  --shadow-card: 0 24px 70px rgba(2, 6, 23, 0.34);
+  --shadow-float: 0 30px 90px rgba(2, 6, 23, 0.45);
 }
 
 @theme inline {
@@ -40,12 +58,23 @@ body {
   background: var(--background);
   color: var(--foreground);
   background-image:
-    radial-gradient(circle at top left, rgba(0, 107, 255, 0.1), transparent 28rem),
-    radial-gradient(circle at 100% 0%, rgba(116, 174, 255, 0.2), transparent 24rem),
+    radial-gradient(circle at top left, rgba(0, 107, 255, 0.12), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(116, 174, 255, 0.18), transparent 24rem),
     linear-gradient(180deg, #fbfdff 0%, #f6f9fc 40%, #f3f7fb 100%);
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
   overflow-x: hidden;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    background-image 0.3s ease;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(56, 189, 248, 0.12), transparent 22rem),
+    linear-gradient(180deg, #07111f 0%, #091524 40%, #08101d 100%);
 }
 
 h1,
@@ -77,6 +106,11 @@ input,
 select,
 textarea {
   min-width: 0;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 p,
@@ -90,6 +124,11 @@ h4 {
 input::placeholder,
 textarea::placeholder {
   color: #94a3b8;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #7b90b4;
 }
 
 ::selection {
@@ -109,34 +148,39 @@ textarea::placeholder {
 
 .hero-panel {
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid color-mix(in srgb, var(--border) 82%, white);
   border-radius: var(--radius-panel);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.88)),
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 98%, white), color-mix(in srgb, var(--panel) 92%, transparent)),
     radial-gradient(circle at top right, rgba(0, 107, 255, 0.08), transparent 18rem);
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(18px);
 }
 
 .surface-panel {
-  border: 1px solid rgba(217, 229, 242, 0.9);
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
   border-radius: var(--radius-card);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--panel);
   box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
 }
 
 .muted-panel {
   border-radius: 22px;
-  background: linear-gradient(180deg, #f8fbff 0%, #f4f8fc 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--panel-muted) 94%, white) 0%,
+    color-mix(in srgb, var(--panel-muted) 100%, transparent) 100%
+  );
 }
 
 .field-control {
   width: 100%;
-  border: 1px solid #d8e2ee;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, white);
   border-radius: var(--radius-control);
-  background: #fff;
+  background: color-mix(in srgb, var(--panel) 98%, white);
   padding: 0.9rem 1rem;
-  color: #0f172a;
+  color: var(--foreground);
   outline: none;
   transition:
     border-color 0.2s ease,
@@ -151,7 +195,7 @@ textarea::placeholder {
 
 .field-control:disabled {
   cursor: not-allowed;
-  background: #f4f7fb;
+  background: color-mix(in srgb, var(--panel-muted) 94%, transparent);
   color: #94a3b8;
 }
 
@@ -184,9 +228,9 @@ textarea::placeholder {
   justify-content: center;
   min-width: 0;
   border-radius: 18px;
-  border: 1px solid #d8e2ee;
-  background: rgba(255, 255, 255, 0.96);
-  color: #334155;
+  border: 1px solid color-mix(in srgb, var(--border) 88%, white);
+  background: color-mix(in srgb, var(--panel) 96%, white);
+  color: color-mix(in srgb, var(--foreground) 82%, #64748b);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -196,8 +240,8 @@ textarea::placeholder {
 
 .button-secondary:hover {
   transform: translateY(-1px);
-  border-color: #bfd2e7;
-  background: #f8fbff;
+  border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+  background: color-mix(in srgb, var(--accent) 72%, var(--panel));
   filter: brightness(1.03);
 }
 
@@ -207,15 +251,15 @@ textarea::placeholder {
   justify-content: center;
   min-width: 0;
   border-radius: 18px;
-  border: 1px solid #fecaca;
-  background: white;
-  color: #dc2626;
+  border: 1px solid color-mix(in srgb, var(--danger) 34%, white);
+  background: color-mix(in srgb, var(--panel) 98%, white);
+  color: var(--danger);
   transition: background-color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
 }
 
 .button-danger:hover {
   transform: translateY(-1px);
-  background: #fff5f5;
+  background: color-mix(in srgb, var(--danger) 10%, var(--panel));
   filter: brightness(1.02);
 }
 
@@ -255,8 +299,8 @@ textarea::placeholder {
   min-width: 2.75rem;
   border: 0;
   border-radius: 1rem;
-  background: #f5f8fc;
-  color: #0f172a;
+  background: color-mix(in srgb, var(--panel-muted) 98%, white);
+  color: var(--foreground);
   font-weight: 600;
   padding: 0.75rem 0.9rem;
   transition:
@@ -279,7 +323,7 @@ textarea::placeholder {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #64748b;
+  color: color-mix(in srgb, var(--foreground) 55%, #94a3b8);
 }
 
 .booking-calendar .react-calendar__month-view__weekdays__weekday {
@@ -299,7 +343,7 @@ textarea::placeholder {
   border: 0;
   background: transparent;
   border-radius: 1.15rem;
-  color: #0f172a;
+  color: var(--foreground);
   padding: 0.95rem 0.5rem;
   font-weight: 600;
   transition:
@@ -311,13 +355,13 @@ textarea::placeholder {
 
 .booking-calendar .react-calendar__tile:hover,
 .booking-calendar .react-calendar__tile:focus-visible {
-  background: #e8f1ff;
+  background: color-mix(in srgb, var(--accent) 92%, white);
   color: var(--primary);
   outline: none;
 }
 
 .booking-calendar .react-calendar__tile--now {
-  background: #edf4ff;
+  background: color-mix(in srgb, var(--accent) 88%, white);
   color: var(--primary-strong);
 }
 
@@ -332,4 +376,107 @@ textarea::placeholder {
 .booking-calendar .react-calendar__tile:disabled {
   background: transparent;
   color: #cbd5e1;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+  background: color-mix(in srgb, var(--panel-subtle) 95%, transparent);
+  color: color-mix(in srgb, var(--foreground) 82%, #64748b);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
+
+.nav-shell {
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+  background: color-mix(in srgb, var(--panel-subtle) 96%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.empty-state {
+  border: 1px dashed color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: 30px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--panel) 96%, white) 0%,
+    color-mix(in srgb, var(--panel-muted) 78%, transparent) 100%
+  );
+}
+
+.empty-state-icon {
+  background: color-mix(in srgb, var(--panel) 88%, white);
+  color: var(--primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.dark .text-slate-950,
+.dark .text-slate-900 {
+  color: #f8fbff !important;
+}
+
+.dark .text-slate-700 {
+  color: #c9d6e8 !important;
+}
+
+.dark .text-slate-600,
+.dark .text-slate-500 {
+  color: #9fb0ca !important;
+}
+
+.dark .text-slate-400 {
+  color: #7f92b3 !important;
+}
+
+.dark .bg-white,
+.dark .bg-white\/80,
+.dark .bg-white\/85,
+.dark .bg-white\/90,
+.dark .bg-white\/92,
+.dark .bg-white\/96,
+.dark .bg-white\/98 {
+  background-color: rgba(10, 19, 35, 0.92) !important;
+}
+
+.dark .bg-slate-50,
+.dark .bg-slate-50\/70,
+.dark .bg-slate-50\/80,
+.dark .bg-slate-100 {
+  background-color: rgba(20, 32, 51, 0.88) !important;
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-200\/70,
+.dark .border-slate-200\/80,
+.dark .border-slate-200\/90,
+.dark .border-slate-300 {
+  border-color: rgba(103, 123, 156, 0.26) !important;
+}
+
+.dark .bg-red-50 {
+  background-color: rgba(127, 29, 29, 0.18) !important;
+}
+
+.dark .border-red-200 {
+  border-color: rgba(248, 113, 113, 0.26) !important;
+}
+
+.dark .text-red-700 {
+  color: #fecaca !important;
+}
+
+.dark .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.18) !important;
+}
+
+.dark .border-emerald-200 {
+  border-color: rgba(74, 222, 128, 0.24) !important;
+}
+
+.dark .text-emerald-700 {
+  color: #bbf7d0 !important;
 }

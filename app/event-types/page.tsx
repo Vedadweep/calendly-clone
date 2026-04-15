@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Create and manage your event types.",
 };
 
+
+
 export default function EventTypesPage() {
   return <EventTypesDashboard />;
 }

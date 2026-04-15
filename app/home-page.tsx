@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
   AnimatedPage,
@@ -12,8 +13,10 @@ import {
   ScrollShadowHeader,
   interactionTransition,
 } from "@/app/motion-provider";
+import { useTheme } from "@/app/ui/theme-provider";
 
 const navigationItems = [
+  { href: "/", label: "Home" },
   { href: "/event-types", label: "Event Types" },
   { href: "/availability", label: "Availability" },
   { href: "/meetings", label: "Meetings" },
@@ -90,47 +93,68 @@ const integrations = [
 ];
 
 const primaryCtaClassName =
-  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-black shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-black hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
 
 const secondaryCtaClassName =
   "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold !text-black shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 hover:!text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6]";
 
 export function HomePage() {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeIntegration, setActiveIntegration] = useState<string | null>(null);
+  const { toggleTheme } = useTheme();
 
   return (
-    <AnimatedPage className="min-h-screen bg-white text-slate-900">
+    <AnimatedPage className="min-h-screen text-slate-900">
       <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
-        <div className="mx-auto h-[34rem] max-w-7xl bg-[radial-gradient(circle_at_top_left,rgba(0,107,255,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(59,146,255,0.14),transparent_26%),linear-gradient(180deg,#f8fbff_0%,rgba(255,255,255,0)_78%)]" />
+        <div className="mx-auto h-[34rem] max-w-7xl bg-[radial-gradient(circle_at_top_left,rgba(0,107,255,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(59,146,255,0.14),transparent_26%),linear-gradient(180deg,#f8fbff_0%,rgba(255,255,255,0)_78%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.2),transparent_30%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_26%),linear-gradient(180deg,rgba(8,20,36,0.92)_0%,rgba(8,20,36,0)_78%)]" />
       </div>
 
-      <ScrollShadowHeader className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/92 backdrop-blur-xl">
+      <ScrollShadowHeader className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/72">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <Link
             href="/"
             className="text-lg font-semibold tracking-tight text-slate-950"
           >
-            Calendly Clone
+            Cal Studio
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-slate-600 transition hover:text-slate-950"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav className="nav-shell hidden items-center gap-2 rounded-full p-1.5 md:flex">
+            {navigationItems.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                    isActive
+                      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.22)]"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:hover:bg-slate-900"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="theme-toggle h-11 w-11"
+              aria-label="Toggle color theme"
+            >
+              <ThemeIcon />
+            </button>
             <InteractiveShell>
               <Link
                 href="/event-types"
-                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-black shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-black hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)]"
+                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-white hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)]"
               >
                 Get Started
               </Link>
@@ -143,7 +167,7 @@ export function HomePage() {
             aria-controls="marketing-navigation"
             aria-label="Toggle navigation menu"
             onClick={() => setIsMobileMenuOpen((current) => !current)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm md:hidden"
+            className="theme-toggle h-11 w-11 md:hidden"
           >
             <MenuIcon open={isMobileMenuOpen} />
           </button>
@@ -160,23 +184,48 @@ export function HomePage() {
             >
               <nav
                 id="marketing-navigation"
-                className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6"
+                className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:px-6"
               >
-                {navigationItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                <div className="flex items-center justify-between rounded-[22px] bg-[var(--panel-muted)] px-4 py-3">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-950">Theme</div>
+                    <div className="text-xs text-slate-500">Switch between light and dark mode</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={toggleTheme}
+                    className="theme-toggle h-10 w-10"
+                    aria-label="Toggle color theme"
                   >
-                    {item.label}
-                  </Link>
-                ))}
+                    <ThemeIcon />
+                  </button>
+                </div>
+                {navigationItems.map((item) => {
+                  const isActive =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                        isActive
+                          ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_28px_rgba(0,107,255,0.2)]"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
                 <InteractiveShell className="mt-2">
                   <Link
                     href="/event-types"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-black shadow-[0_16px_32px_rgba(0,107,255,0.24)] hover:text-black"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] hover:text-white"
                   >
                     Get Started
                   </Link>
@@ -558,6 +607,31 @@ export function HomePage() {
         ) : null}
       </AnimatePresence>
     </AnimatedPage>
+  );
+}
+
+function ThemeIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 3v2.5" />
+      <path d="M12 18.5V21" />
+      <path d="m5.64 5.64 1.77 1.77" />
+      <path d="m16.59 16.59 1.77 1.77" />
+      <path d="M3 12h2.5" />
+      <path d="M18.5 12H21" />
+      <path d="m5.64 18.36 1.77-1.77" />
+      <path d="m16.59 7.41 1.77-1.77" />
+      <path d="M15.5 15.5A5.5 5.5 0 0 1 8.7 7.3a5.5 5.5 0 1 0 6.8 8.2Z" />
+    </svg>
   );
 }
 

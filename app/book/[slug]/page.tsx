@@ -4,6 +4,7 @@ import { BookingPageClient } from "./booking-page-client";
 
 import { ensureDatabaseReady, prisma } from "@/lib/prisma";
 
+
 export default async function BookEventPage({
   params,
 }: PageProps<"/book/[slug]">) {

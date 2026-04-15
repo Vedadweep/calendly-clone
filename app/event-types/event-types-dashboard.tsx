@@ -11,6 +11,7 @@ import {
   Reveal,
   interactionTransition,
 } from "@/app/motion-provider";
+import { useConfirm, useToast } from "@/app/ui/feedback-provider";
 import {
   DURATION_OPTIONS,
   formatDurationLabel,
@@ -39,6 +40,8 @@ export function EventTypesDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { showToast } = useToast();
+  const { confirm } = useConfirm();
 
   const activeEventType =
     activeEventTypeId === null
@@ -133,6 +136,7 @@ export function EventTypesDashboard() {
     }
 
     await fetchEventTypes();
+    showToast(activeEventType ? "Event updated" : "Event created");
     closeModal();
   }
 
@@ -151,9 +155,14 @@ export function EventTypesDashboard() {
   }
 
   async function handleDelete(id: string) {
-    const confirmed = window.confirm(
-      "Delete this event type? This action cannot be undone.",
-    );
+    const confirmed = await confirm({
+      title: "Are you sure you want to delete?",
+      description:
+        "Deleting this event type removes its booking link and any connected scheduling setup.",
+      confirmLabel: "Delete",
+      cancelLabel: "Cancel",
+      tone: "danger",
+    });
 
     if (!confirmed) {
       return;
@@ -175,6 +184,7 @@ export function EventTypesDashboard() {
         }
 
         await fetchEventTypes();
+        showToast("Event deleted");
         if (activeEventTypeId === id) {
           closeModal();
         }
@@ -186,6 +196,12 @@ export function EventTypesDashboard() {
         );
       });
     });
+  }
+
+  async function handleCopyLink(slug: string) {
+    const bookingUrl = `${window.location.origin}/book/${slug}`;
+    await navigator.clipboard.writeText(bookingUrl);
+    showToast("Copied to clipboard", "info");
   }
 
   return (
@@ -255,16 +271,15 @@ export function EventTypesDashboard() {
                 </div>
               ))
             ) : eventTypes.length === 0 ? (
-              <div className="col-span-full rounded-[30px] border border-dashed border-slate-300 bg-white/88 p-10 text-center shadow-[var(--shadow-soft)] sm:p-14">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-[var(--panel-muted)] text-[var(--primary)]">
+              <div className="empty-state col-span-full p-10 text-center shadow-[var(--shadow-soft)] sm:p-14">
+                <div className="empty-state-icon mx-auto flex h-16 w-16 items-center justify-center rounded-[22px]">
                   <CalendarGlyph />
                 </div>
                 <h2 className="mt-6 text-2xl font-semibold text-slate-950">
                   No event types yet
                 </h2>
                 <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600">
-                  Create your first event type to start shaping the booking
-                  experience.
+                  No events yet — create your first event and start sharing a polished booking page.
                 </p>
                 <MotionButton
                   type="button"
@@ -283,6 +298,13 @@ export function EventTypesDashboard() {
                         {formatDurationLabel(eventType.durationInMinutes)}
                       </div>
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <MotionButton
+                          type="button"
+                          onClick={() => void handleCopyLink(eventType.slug)}
+                          className="button-secondary w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
+                        >
+                          Copy Link
+                        </MotionButton>
                         <MotionButton
                           type="button"
                           onClick={() => openEditModal(eventType)}
@@ -313,13 +335,22 @@ export function EventTypesDashboard() {
                     </div>
 
                     <div className="mt-auto pt-8">
-                      <div className="muted-panel px-4 py-4">
-                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                          Booking URL
+                      <div className="muted-panel flex flex-col gap-3 px-4 py-4">
+                        <div>
+                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            Booking URL
+                          </div>
+                          <div className="mt-2 break-all text-sm font-medium text-slate-700">
+                            /book/{eventType.slug}
+                          </div>
                         </div>
-                        <div className="mt-2 break-all text-sm font-medium text-slate-700">
-                          calendly-clone.local/book/{eventType.slug}
-                        </div>
+                        <MotionButton
+                          type="button"
+                          onClick={() => void handleCopyLink(eventType.slug)}
+                          className="button-secondary px-4 py-2.5 text-sm font-semibold"
+                        >
+                          Copy booking link
+                        </MotionButton>
                       </div>
                     </div>
                   </article>

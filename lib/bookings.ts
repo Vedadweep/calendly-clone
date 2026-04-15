@@ -25,6 +25,15 @@ type BookingInput = {
   time: string;
 };
 
+type MeetingRecord = {
+  id: string;
+  eventName: string;
+  inviteeName: string;
+  inviteeEmail: string;
+  startTime: string;
+  endTime: string;
+};
+
 function isValidDateString(value: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
@@ -296,4 +305,44 @@ export async function createBooking(input: BookingInput) {
   };
 }
 
-export type { AvailabilitySummary, EventTypeSummary };
+export async function getMeetingRecords() {
+  await ensureDatabaseReady();
+
+  const bookings = await prisma.booking.findMany({
+    orderBy: {
+      startTime: "asc",
+    },
+    select: {
+      id: true,
+      guestName: true,
+      guestEmail: true,
+      startTime: true,
+      endTime: true,
+      eventType: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  return bookings.map((booking) => ({
+    id: booking.id,
+    eventName: booking.eventType.name,
+    inviteeName: booking.guestName,
+    inviteeEmail: booking.guestEmail,
+    startTime: booking.startTime.toISOString(),
+    endTime: booking.endTime.toISOString(),
+  }));
+}
+
+export async function deleteBooking(id: string) {
+  await ensureDatabaseReady();
+
+  return prisma.booking.delete({
+    where: { id },
+    select: { id: true },
+  });
+}
+
+export type { AvailabilitySummary, EventTypeSummary, MeetingRecord };

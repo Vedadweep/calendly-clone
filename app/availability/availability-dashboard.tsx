@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 
+import { DashboardShell } from "@/app/dashboard-shell";
 import {
   TIMEZONE_OPTIONS,
   WEEKDAY_OPTIONS,
@@ -123,8 +124,9 @@ export function AvailabilityDashboard() {
   }
 
   return (
-    <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
+    <DashboardShell>
+      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <section className="rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
@@ -307,7 +309,8 @@ export function AvailabilityDashboard() {
             </div>
           </section>
         </form>
-      </div>
-    </main>
+        </div>
+      </main>
+    </DashboardShell>
   );
 }

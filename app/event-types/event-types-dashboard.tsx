@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 
+import { DashboardShell } from "@/app/dashboard-shell";
 import {
   DURATION_OPTIONS,
   formatDurationLabel,
@@ -180,8 +181,9 @@ export function EventTypesDashboard() {
   }
 
   return (
-    <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+    <DashboardShell>
+      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
         <section className="overflow-hidden rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-4">
@@ -301,7 +303,8 @@ export function EventTypesDashboard() {
             ))
           )}
         </section>
-      </div>
+        </div>
+      </main>
 
       {isModalOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-8 backdrop-blur-sm">
@@ -428,7 +431,7 @@ export function EventTypesDashboard() {
           </div>
         </div>
       ) : null}
-    </main>
+    </DashboardShell>
   );
 }
 

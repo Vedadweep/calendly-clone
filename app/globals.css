@@ -45,6 +45,7 @@ body {
     linear-gradient(180deg, #fbfdff 0%, #f6f9fc 40%, #f3f7fb 100%);
   font-family: var(--font-sans);
   letter-spacing: -0.01em;
+  overflow-x: hidden;
 }
 
 h1,
@@ -68,6 +69,22 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: anywhere;
 }
 
 input::placeholder,
@@ -142,6 +159,7 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
   border: 0;
   border-radius: 18px;
   background: linear-gradient(135deg, var(--primary), #3b92ff);
@@ -162,6 +180,7 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
   border-radius: 18px;
   border: 1px solid #d8e2ee;
   background: rgba(255, 255, 255, 0.96);
@@ -179,6 +198,10 @@ textarea::placeholder {
 }
 
 .button-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
   border-radius: 18px;
   border: 1px solid #fecaca;
   background: white;

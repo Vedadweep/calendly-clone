@@ -184,143 +184,143 @@ export function EventTypesDashboard() {
     <DashboardShell>
       <main className="dashboard-page">
         <div className="dashboard-container flex flex-col gap-8 lg:gap-10">
-        <section className="hero-panel p-6 sm:p-8 lg:p-10">
-          <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
-            <div className="max-w-3xl space-y-5">
-              <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
-                Event Type Dashboard
-              </div>
-              <div className="space-y-4">
-                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
-                  Design booking options your guests can trust.
-                </h1>
-                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-                  Create polished event types, tune their duration, and keep your
-                  scheduling lineup organized in one place.
-                </p>
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-[repeat(2,minmax(0,200px))] xl:min-w-[420px]">
-              <HeroMetric
-                label="Event types"
-                value={isLoading ? "..." : String(eventTypes.length)}
-              />
-              <button
-                type="button"
-                onClick={openCreateModal}
-                className="button-primary min-h-28 rounded-[24px] px-6 py-5 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2"
-              >
-                <span className="flex w-full flex-col gap-1">
-                  <span className="text-xs uppercase tracking-[0.22em] text-white/72">
-                    Create
-                  </span>
-                  <span className="text-lg tracking-tight">Add New Event</span>
-                </span>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {error ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        ) : null}
-
-        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="surface-panel min-h-64 animate-pulse p-6 sm:p-7"
-              >
-                <div className="h-4 w-24 rounded-full bg-slate-200" />
-                <div className="mt-6 h-8 w-2/3 rounded-full bg-slate-200" />
-                <div className="mt-3 h-4 w-full rounded-full bg-slate-200" />
-                <div className="mt-10 h-11 w-full rounded-2xl bg-slate-200" />
-              </div>
-            ))
-          ) : eventTypes.length === 0 ? (
-            <div className="col-span-full rounded-[30px] border border-dashed border-slate-300 bg-white/88 p-10 text-center shadow-[var(--shadow-soft)] sm:p-14">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-[var(--panel-muted)] text-[var(--primary)]">
-                <CalendarGlyph />
-              </div>
-              <h2 className="mt-6 text-2xl font-semibold text-slate-950">
-                No event types yet
-              </h2>
-              <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600">
-                Create your first event type to start shaping the booking
-                experience.
-              </p>
-              <button
-                type="button"
-                onClick={openCreateModal}
-                className="button-primary mt-7 px-5 py-3 text-sm font-semibold"
-              >
-                Create Event Type
-              </button>
-            </div>
-          ) : (
-            eventTypes.map((eventType) => (
-              <article
-                key={eventType.id}
-                className="group surface-panel flex flex-col p-6 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-7"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                    {formatDurationLabel(eventType.durationInMinutes)}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => openEditModal(eventType)}
-                      className="button-secondary px-3.5 py-2 text-sm font-medium"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(eventType.id)}
-                      className="button-danger px-3.5 py-2 text-sm font-medium"
-                    >
-                      Delete
-                    </button>
-                  </div>
+          <section className="hero-panel p-5 sm:p-8 lg:p-10">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+              <div className="max-w-3xl space-y-5">
+                <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
+                  Event Type Dashboard
                 </div>
-
-                <div className="mt-7 space-y-3">
-                  <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
-                    {eventType.name}
-                  </h2>
-                  <p className="text-sm text-slate-500">/{eventType.slug}</p>
-                  <p className="text-sm leading-7 text-slate-600">
-                    Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
-                    session with a clean booking link and clear scheduling
-                    details.
+                <div className="space-y-4">
+                  <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                    Design booking options your guests can trust.
+                  </h1>
+                  <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                    Create polished event types, tune their duration, and keep your
+                    scheduling lineup organized in one place.
                   </p>
                 </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 xl:min-w-[420px]">
+                <HeroMetric
+                  label="Event types"
+                  value={isLoading ? "..." : String(eventTypes.length)}
+                />
+                <button
+                  type="button"
+                  onClick={openCreateModal}
+                  className="button-primary min-h-24 rounded-[24px] px-5 py-5 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 sm:min-h-28 sm:px-6"
+                >
+                  <span className="flex w-full flex-col gap-1">
+                    <span className="text-xs uppercase tracking-[0.22em] text-white/72">
+                      Create
+                    </span>
+                    <span className="text-lg tracking-tight">Add New Event</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </section>
 
-                <div className="mt-auto pt-8">
-                  <div className="muted-panel px-4 py-4">
-                    <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                      Booking URL
+          {error ? (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : null}
+
+          <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {isLoading ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="surface-panel min-h-64 animate-pulse p-6 sm:p-7"
+                >
+                  <div className="h-4 w-24 rounded-full bg-slate-200" />
+                  <div className="mt-6 h-8 w-2/3 rounded-full bg-slate-200" />
+                  <div className="mt-3 h-4 w-full rounded-full bg-slate-200" />
+                  <div className="mt-10 h-11 w-full rounded-2xl bg-slate-200" />
+                </div>
+              ))
+            ) : eventTypes.length === 0 ? (
+              <div className="col-span-full rounded-[30px] border border-dashed border-slate-300 bg-white/88 p-10 text-center shadow-[var(--shadow-soft)] sm:p-14">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-[var(--panel-muted)] text-[var(--primary)]">
+                  <CalendarGlyph />
+                </div>
+                <h2 className="mt-6 text-2xl font-semibold text-slate-950">
+                  No event types yet
+                </h2>
+                <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600">
+                  Create your first event type to start shaping the booking
+                  experience.
+                </p>
+                <button
+                  type="button"
+                  onClick={openCreateModal}
+                  className="button-primary mt-7 px-5 py-3 text-sm font-semibold"
+                >
+                  Create Event Type
+                </button>
+              </div>
+            ) : (
+              eventTypes.map((eventType) => (
+                <article
+                  key={eventType.id}
+                  className="group surface-panel flex flex-col p-6 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-7"
+                >
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      {formatDurationLabel(eventType.durationInMinutes)}
                     </div>
-                    <div className="mt-2 break-all text-sm font-medium text-slate-700">
-                      calendly-clone.local/book/{eventType.slug}
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(eventType)}
+                        className="button-secondary w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(eventType.id)}
+                        className="button-danger w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
-                </div>
-              </article>
-            ))
-          )}
-        </section>
+
+                  <div className="mt-7 space-y-3">
+                    <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
+                      {eventType.name}
+                    </h2>
+                    <p className="text-sm text-slate-500">/{eventType.slug}</p>
+                    <p className="text-sm leading-7 text-slate-600">
+                      Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
+                      session with a clean booking link and clear scheduling
+                      details.
+                    </p>
+                  </div>
+
+                  <div className="mt-auto pt-8">
+                    <div className="muted-panel px-4 py-4">
+                      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        Booking URL
+                      </div>
+                      <div className="mt-2 break-all text-sm font-medium text-slate-700">
+                        calendly-clone.local/book/{eventType.slug}
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ))
+            )}
+          </section>
         </div>
       </main>
 
       {isModalOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-8 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-6 shadow-[var(--shadow-float)] sm:p-8">
-            <div className="flex items-start justify-between gap-6">
+          <div className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-5 shadow-[var(--shadow-float)] sm:p-8">
+            <div className="flex items-start justify-between gap-4 sm:gap-6">
               <div>
                 <p className="text-sm font-medium text-[var(--primary)]">
                   {activeEventType ? "Edit event type" : "Create event type"}
@@ -411,9 +411,9 @@ export function EventTypesDashboard() {
                 </label>
               </div>
 
-              <div className="muted-panel px-4 py-4 text-sm text-slate-600">
+              <div className="muted-panel break-words px-4 py-4 text-sm text-slate-600">
                 Booking link preview:
-                <span className="ml-2 font-medium text-slate-900">
+                <span className="ml-2 break-all font-medium text-slate-900">
                   calendly-clone.local/book/{slugifyEventType(form.slug || form.name) || "your-event"}
                 </span>
               </div>

@@ -169,7 +169,7 @@ function MeetingsSection({
 }: MeetingsSectionProps) {
   return (
     <section className="surface-panel p-6 sm:p-8">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
             {title}
@@ -194,30 +194,30 @@ function MeetingsSection({
           </p>
         </div>
       ) : (
-        <div className="mt-6 grid gap-4">
+        <div className="mt-6 grid gap-4 md:grid-cols-2 2xl:grid-cols-1">
           {meetings.map((meeting) => {
             const isCancelling = activeMeetingId === meeting.id && isPending;
 
             return (
               <article
                 key={meeting.id}
-                className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 lg:grid-cols-[1.1fr_1fr_auto]"
+                className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_auto]"
               >
                 <div className="space-y-3">
                   <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
                     {meeting.eventName}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-slate-950">
+                    <h3 className="break-words text-xl font-semibold text-slate-950">
                       {meeting.inviteeName}
                     </h3>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 break-all text-sm text-slate-500">
                       {meeting.inviteeEmail}
                     </p>
                   </div>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
                   <DetailCard
                     label="Date"
                     value={format(new Date(meeting.startTime), "EEEE, MMMM d, yyyy")}
@@ -231,12 +231,12 @@ function MeetingsSection({
                   />
                 </div>
 
-                <div className="flex items-start justify-end">
+                <div className="flex items-start justify-stretch xl:justify-end">
                   <button
                     type="button"
                     onClick={() => onCancel(meeting)}
                     disabled={isCancelling}
-                    className="button-danger inline-flex min-w-32 items-center justify-center px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+                    className="button-danger inline-flex min-h-11 w-full items-center justify-center px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto xl:min-w-32"
                   >
                     {isCancelling ? "Cancelling..." : "Cancel meeting"}
                   </button>

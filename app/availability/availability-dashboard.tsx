@@ -127,48 +127,48 @@ export function AvailabilityDashboard() {
     <DashboardShell>
       <main className="dashboard-page">
         <div className="dashboard-container flex max-w-6xl flex-col gap-8 lg:gap-10">
-        <section className="hero-panel p-6 sm:p-8 lg:p-10">
-          <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-            <div className="space-y-3">
-              <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
-                Availability
+          <section className="hero-panel p-5 sm:p-8 lg:p-10">
+            <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+              <div className="space-y-3">
+                <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
+                  Availability
+                </div>
+                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
+                  Set when people can book with you.
+                </h1>
+                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                  Choose your working days, define your hours, and keep everything
+                  aligned to the timezone you actually use.
+                </p>
               </div>
-              <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
-                Set when people can book with you.
-              </h1>
-              <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-                Choose your working days, define your hours, and keep everything
-                aligned to the timezone you actually use.
-              </p>
+              <button
+                type="submit"
+                form="availability-form"
+                disabled={isPending || isLoading}
+                className="button-primary min-h-11 w-full px-6 py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+              >
+                {isPending ? "Saving..." : "Save Availability"}
+              </button>
             </div>
-            <button
-              type="submit"
-              form="availability-form"
-              disabled={isPending || isLoading}
-              className="button-primary px-6 py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
-            >
-              {isPending ? "Saving..." : "Save Availability"}
-            </button>
-          </div>
-        </section>
+          </section>
 
-        {error ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </div>
-        ) : null}
+          {error ? (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : null}
 
-        {successMessage ? (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-            {successMessage}
-          </div>
-        ) : null}
+          {successMessage ? (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              {successMessage}
+            </div>
+          ) : null}
 
-        <form
-          id="availability-form"
-          className="space-y-6"
-          onSubmit={handleSubmit}
-        >
+          <form
+            id="availability-form"
+            className="space-y-6"
+            onSubmit={handleSubmit}
+          >
           <section className="surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
@@ -187,7 +187,7 @@ export function AvailabilityDashboard() {
                       currentDays.map((day) => ({
                         ...day,
                         timezone: nextTimezone,
-                        })),
+                      })),
                     );
                   }}
                   className="field-control"
@@ -235,7 +235,7 @@ export function AvailabilityDashboard() {
                     return (
                       <div
                         key={weekday.value}
-                        className="grid gap-4 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(249,251,255,0.95),rgba(244,248,252,0.92))] px-4 py-5 shadow-[0_14px_34px_rgba(15,23,42,0.04)] md:grid-cols-[1.1fr_0.9fr_0.9fr] sm:px-5"
+                        className="grid gap-4 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(249,251,255,0.95),rgba(244,248,252,0.92))] px-4 py-5 shadow-[0_14px_34px_rgba(15,23,42,0.04)] md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] sm:px-5"
                       >
                         <div className="flex items-center justify-between gap-4 rounded-[20px] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                           <div>
@@ -256,7 +256,7 @@ export function AvailabilityDashboard() {
                                 enabled: !currentDay.enabled,
                               }))
                             }
-                            className={`relative inline-flex h-7 w-12 items-center rounded-full transition ${
+                            className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition ${
                               day.enabled
                                 ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] shadow-[0_12px_20px_rgba(0,107,255,0.22)]"
                                 : "bg-slate-300"
@@ -310,7 +310,7 @@ export function AvailabilityDashboard() {
                   })}
             </div>
           </section>
-        </form>
+          </form>
         </div>
       </main>
     </DashboardShell>

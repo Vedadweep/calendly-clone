@@ -232,7 +232,7 @@ export function BookingPageClient({
           </section>
         ) : null}
 
-        <section className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
           <div className="surface-panel p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start">
             <div className="space-y-1">
               <h2 className="text-xl font-semibold text-slate-950">Select a date</h2>
@@ -261,7 +261,7 @@ export function BookingPageClient({
             </div>
           </div>
 
-          <div className="surface-panel p-5 sm:p-6">
+          <div className="surface-panel min-w-0 p-5 sm:p-6">
             <div className="flex flex-col gap-2 border-b border-slate-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-slate-950">Available times</h2>
@@ -269,7 +269,7 @@ export function BookingPageClient({
                   {format(selectedDate, "EEEE, MMMM d")}
                 </p>
               </div>
-              <div className="text-sm text-slate-500">{timezone}</div>
+              <div className="break-all text-sm text-slate-500">{timezone}</div>
             </div>
 
             <div className="mt-5">
@@ -301,7 +301,7 @@ export function BookingPageClient({
                         key={slot.time}
                         type="button"
                         onClick={() => setSelectedTime(slot.time)}
-                        className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+                        className={`min-h-11 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
                           isSelected
                             ? "border-[var(--primary)] bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_30px_rgba(0,107,255,0.22)]"
                             : "border-slate-200 bg-white text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary)]"

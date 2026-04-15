@@ -183,29 +183,30 @@ export function BookingPageClient({
   }
 
   return (
-    <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-10">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-        <section className="rounded-[32px] border border-white/80 bg-white/95 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:p-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <main className="dashboard-page min-h-screen">
+      <div className="dashboard-container flex max-w-6xl flex-col gap-6 lg:gap-8">
+        <section className="hero-panel p-6 sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
               <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                 Public Booking Page
               </div>
               <div className="space-y-2">
-                <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
                   {eventType.name}
                 </h1>
-                <p className="text-base leading-7 text-slate-600 sm:text-lg">
+                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                   Pick a day, choose a time, and reserve your{" "}
                   {formatDurationLabel(eventType.durationInMinutes).toLowerCase()} session.
                 </p>
               </div>
             </div>
-            <div className="rounded-3xl bg-slate-50 px-5 py-4 text-sm text-slate-600">
-              <div className="font-semibold text-slate-900">
-                {formatDurationLabel(eventType.durationInMinutes)}
-              </div>
-              <div className="mt-1">Timezone: {timezone}</div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[22rem]">
+              <SummaryCard
+                label="Duration"
+                value={formatDurationLabel(eventType.durationInMinutes)}
+              />
+              <SummaryCard label="Timezone" value={timezone} />
             </div>
           </div>
         </section>
@@ -217,25 +218,25 @@ export function BookingPageClient({
         ) : null}
 
         {confirmation ? (
-          <section className="rounded-[28px] border border-emerald-200 bg-white p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <section className="surface-panel border-emerald-200 p-6 sm:p-8">
             <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
               Booking Confirmed
             </div>
-            <h2 className="mt-4 text-2xl font-semibold text-slate-900">
+            <h2 className="mt-4 text-2xl font-semibold text-slate-950">
               {confirmation.guestName}, you&apos;re booked.
             </h2>
-            <p className="mt-3 text-base leading-7 text-slate-600">
+            <p className="mt-3 text-base leading-8 text-slate-600">
               {confirmation.eventType.name} is scheduled for {confirmation.dateLabel} at{" "}
               {confirmation.timeLabel}. A confirmation can be sent to {confirmation.guestEmail}.
             </p>
           </section>
         ) : null}
 
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-          <div className="rounded-[28px] border border-slate-200/80 bg-white/95 p-5 shadow-[var(--shadow-soft)] sm:p-6">
+        <section className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+          <div className="surface-panel p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-900">Select a date</h2>
-              <p className="text-sm leading-6 text-slate-600">
+              <h2 className="text-xl font-semibold text-slate-950">Select a date</h2>
+              <p className="text-sm leading-7 text-slate-600">
                 Available days are based on the host&apos;s weekly schedule.
               </p>
             </div>
@@ -260,11 +261,11 @@ export function BookingPageClient({
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-slate-200/80 bg-white/95 p-5 shadow-[var(--shadow-soft)] sm:p-6">
+          <div className="surface-panel p-5 sm:p-6">
             <div className="flex flex-col gap-2 border-b border-slate-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">Available times</h2>
-                <p className="text-sm leading-6 text-slate-600">
+                <h2 className="text-xl font-semibold text-slate-950">Available times</h2>
+                <p className="text-sm leading-7 text-slate-600">
                   {format(selectedDate, "EEEE, MMMM d")}
                 </p>
               </div>
@@ -282,11 +283,11 @@ export function BookingPageClient({
                   ))}
                 </div>
               ) : slots.length === 0 ? (
-                <div className="rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-5 py-10 text-center">
-                  <div className="text-lg font-semibold text-slate-900">
+                <div className="rounded-[24px] border border-dashed border-slate-200 bg-slate-50 px-5 py-10 text-center">
+                  <div className="text-lg font-semibold text-slate-950">
                     No time slots available
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                  <p className="mt-2 text-sm leading-7 text-slate-600">
                     Choose another day to see open times for this event.
                   </p>
                 </div>
@@ -302,7 +303,7 @@ export function BookingPageClient({
                         onClick={() => setSelectedTime(slot.time)}
                         className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
                           isSelected
-                            ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-[0_14px_30px_rgba(15,111,255,0.22)]"
+                            ? "border-[var(--primary)] bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_30px_rgba(0,107,255,0.22)]"
                             : "border-slate-200 bg-white text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary)]"
                         }`}
                       >
@@ -316,7 +317,7 @@ export function BookingPageClient({
 
             <form className="mt-8 space-y-4 border-t border-slate-100 pt-6" onSubmit={handleBookingSubmit}>
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold text-slate-900">Your details</h3>
+                <h3 className="text-lg font-semibold text-slate-950">Your details</h3>
                 <p className="text-sm text-slate-600">
                   {selectedTime
                     ? `Booking ${format(selectedDate, "MMMM d")} at ${
@@ -333,7 +334,7 @@ export function BookingPageClient({
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   placeholder="Jane Doe"
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                  className="field-control"
                   required
                 />
               </label>
@@ -345,7 +346,7 @@ export function BookingPageClient({
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="jane@example.com"
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                  className="field-control"
                   required
                 />
               </label>
@@ -353,7 +354,7 @@ export function BookingPageClient({
               <button
                 type="submit"
                 disabled={isPending || !selectedTime}
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(15,111,255,0.28)] transition hover:bg-[var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
+                className="button-primary w-full px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isPending ? "Confirming..." : "Confirm Booking"}
               </button>
@@ -362,5 +363,16 @@ export function BookingPageClient({
         </section>
       </div>
     </main>
+  );
+}
+
+function SummaryCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-4 text-sm text-slate-600 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+        {label}
+      </div>
+      <div className="mt-2 text-base font-semibold text-slate-950">{value}</div>
+    </div>
   );
 }

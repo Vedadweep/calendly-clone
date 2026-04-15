@@ -1,23 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f8fc;
-  --foreground: #10233f;
+  --background: #f6f9fc;
+  --foreground: #17314f;
   --panel: #ffffff;
-  --panel-muted: #eef4fb;
-  --border: #dbe6f2;
-  --primary: #0f6fff;
-  --primary-strong: #0c5bdb;
-  --accent: #d9ebff;
+  --panel-muted: #f2f7fd;
+  --border: #d9e5f2;
+  --primary: #006bff;
+  --primary-strong: #0050d4;
+  --accent: #e6f0ff;
   --danger: #d14343;
   --success: #14804a;
-  --shadow-soft: 0 20px 60px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 18px 44px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 24px 70px rgba(15, 23, 42, 0.07);
+  --shadow-float: 0 30px 90px rgba(15, 23, 42, 0.12);
+  --radius-panel: 32px;
+  --radius-card: 26px;
+  --radius-control: 18px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Segoe UI", "Helvetica Neue", sans-serif;
+  --font-sans: "Aptos", "Segoe UI Variable Text", "Segoe UI", "Helvetica Neue", sans-serif;
   --font-mono: "Cascadia Code", "SFMono-Regular", monospace;
 }
 
@@ -35,10 +40,18 @@ body {
   background: var(--background);
   color: var(--foreground);
   background-image:
-    radial-gradient(circle at top left, rgba(15, 111, 255, 0.12), transparent 26rem),
-    radial-gradient(circle at top right, rgba(151, 197, 255, 0.22), transparent 22rem),
-    linear-gradient(180deg, #f7fbff 0%, #f4f8fc 100%);
+    radial-gradient(circle at top left, rgba(0, 107, 255, 0.1), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(116, 174, 255, 0.2), transparent 24rem),
+    linear-gradient(180deg, #fbfdff 0%, #f6f9fc 40%, #f3f7fb 100%);
   font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.03em;
 }
 
 a {
@@ -48,12 +61,146 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
 }
 
 ::selection {
   background: rgba(15, 111, 255, 0.18);
+}
+
+.dashboard-page {
+  flex: 1;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.dashboard-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 76rem;
+}
+
+.hero-panel {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: var(--radius-panel);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.88)),
+    radial-gradient(circle at top right, rgba(0, 107, 255, 0.08), transparent 18rem);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(18px);
+}
+
+.surface-panel {
+  border: 1px solid rgba(217, 229, 242, 0.9);
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+.muted-panel {
+  border-radius: 22px;
+  background: linear-gradient(180deg, #f8fbff 0%, #f4f8fc 100%);
+}
+
+.field-control {
+  width: 100%;
+  border: 1px solid #d8e2ee;
+  border-radius: var(--radius-control);
+  background: #fff;
+  padding: 0.9rem 1rem;
+  color: #0f172a;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.field-control:focus {
+  border-color: color-mix(in srgb, var(--primary) 65%, white);
+  box-shadow: 0 0 0 4px rgba(0, 107, 255, 0.12);
+}
+
+.field-control:disabled {
+  cursor: not-allowed;
+  background: #f4f7fb;
+  color: #94a3b8;
+}
+
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), #3b92ff);
+  color: white;
+  box-shadow: 0 16px 32px rgba(0, 107, 255, 0.26);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 38px rgba(0, 107, 255, 0.28);
+}
+
+.button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid #d8e2ee;
+  background: rgba(255, 255, 255, 0.96);
+  color: #334155;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button-secondary:hover {
+  transform: translateY(-1px);
+  border-color: #bfd2e7;
+  background: #f8fbff;
+}
+
+.button-danger {
+  border-radius: 18px;
+  border: 1px solid #fecaca;
+  background: white;
+  color: #dc2626;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button-danger:hover {
+  transform: translateY(-1px);
+  background: #fff5f5;
+}
+
+@media (min-width: 640px) {
+  .dashboard-page {
+    padding: 2rem 1.5rem 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-page {
+    padding: 2.5rem 2rem 4.5rem;
+  }
 }
 
 .booking-calendar .react-calendar {
@@ -67,23 +214,28 @@ select {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .booking-calendar .react-calendar__navigation button {
   min-width: 2.75rem;
   border: 0;
   border-radius: 1rem;
-  background: #f8fafc;
+  background: #f5f8fc;
   color: #0f172a;
   font-weight: 600;
   padding: 0.75rem 0.9rem;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .booking-calendar .react-calendar__navigation button:hover,
 .booking-calendar .react-calendar__navigation button:focus-visible {
-  background: #e2e8f0;
+  background: white;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
   outline: none;
 }
 
@@ -116,27 +268,31 @@ select {
   color: #0f172a;
   padding: 0.95rem 0.5rem;
   font-weight: 600;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .booking-calendar .react-calendar__tile:hover,
 .booking-calendar .react-calendar__tile:focus-visible {
-  background: #e0edff;
-  color: #0f6fff;
+  background: #e8f1ff;
+  color: var(--primary);
   outline: none;
 }
 
 .booking-calendar .react-calendar__tile--now {
-  background: #eff6ff;
-  color: #0c5bdb;
+  background: #edf4ff;
+  color: var(--primary-strong);
 }
 
 .booking-calendar .react-calendar__tile--active,
 .booking-calendar .react-calendar__tile--active:hover,
 .booking-calendar .react-calendar__tile--active:focus-visible {
-  background: #0f6fff;
+  background: linear-gradient(135deg, var(--primary), #3b92ff);
   color: #ffffff;
-  box-shadow: 0 12px 28px rgba(15, 111, 255, 0.22);
+  box-shadow: 0 14px 32px rgba(0, 107, 255, 0.24);
 }
 
 .booking-calendar .react-calendar__tile:disabled {

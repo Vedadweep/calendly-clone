@@ -80,19 +80,19 @@ export function MeetingsDashboard({
 
   return (
     <DashboardShell>
-      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-          <section className="overflow-hidden rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <main className="dashboard-page">
+        <div className="dashboard-container flex flex-col gap-8 lg:gap-10">
+          <section className="hero-panel p-6 sm:p-8 lg:p-10">
+            <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
               <div className="max-w-2xl space-y-4">
                 <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                   Meetings
                 </div>
                 <div className="space-y-3">
-                  <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+                  <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
                     Keep every scheduled conversation organized.
                   </h2>
-                  <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+                  <p className="max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
                     Review what is coming up, look back at completed sessions,
                     and cancel bookings when plans change.
                   </p>
@@ -168,13 +168,13 @@ function MeetingsSection({
   onCancel,
 }: MeetingsSectionProps) {
   return (
-    <section className="rounded-[28px] border border-slate-200/80 bg-white/90 p-6 shadow-[var(--shadow-soft)] sm:p-8">
+    <section className="surface-panel p-6 sm:p-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-950">
             {title}
           </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
+          <p className="mt-2 text-sm leading-7 text-slate-600">{description}</p>
         </div>
         <div className="inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600">
           {meetings.length} meeting{meetings.length === 1 ? "" : "s"}
@@ -182,14 +182,14 @@ function MeetingsSection({
       </div>
 
       {meetings.length === 0 ? (
-        <div className="mt-6 rounded-[24px] border border-dashed border-slate-300 bg-slate-50/70 px-6 py-10 text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[var(--primary)] shadow-sm">
+        <div className="mt-6 rounded-[26px] border border-dashed border-slate-300 bg-slate-50/70 px-6 py-12 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-white text-[var(--primary)] shadow-[0_12px_28px_rgba(15,23,42,0.06)]">
             <CalendarGlyph />
           </div>
-          <h3 className="mt-4 text-lg font-semibold text-slate-900">
+          <h3 className="mt-5 text-lg font-semibold text-slate-950">
             {emptyTitle}
           </h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
+          <p className="mx-auto mt-2 max-w-md text-sm leading-7 text-slate-600">
             {emptyDescription}
           </p>
         </div>
@@ -201,14 +201,14 @@ function MeetingsSection({
             return (
               <article
                 key={meeting.id}
-                className="grid gap-5 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] lg:grid-cols-[1.1fr_1fr_auto]"
+                className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 lg:grid-cols-[1.1fr_1fr_auto]"
               >
                 <div className="space-y-3">
                   <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
                     {meeting.eventName}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-slate-900">
+                    <h3 className="text-xl font-semibold text-slate-950">
                       {meeting.inviteeName}
                     </h3>
                     <p className="mt-1 text-sm text-slate-500">
@@ -236,7 +236,7 @@ function MeetingsSection({
                     type="button"
                     onClick={() => onCancel(meeting)}
                     disabled={isCancelling}
-                    className="inline-flex min-w-32 items-center justify-center rounded-2xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="button-danger inline-flex min-w-32 items-center justify-center px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isCancelling ? "Cancelling..." : "Cancel meeting"}
                   </button>
@@ -261,8 +261,8 @@ function MetricCard({
 }) {
   const toneClassName =
     tone === "blue"
-      ? "bg-[linear-gradient(135deg,#0f6fff,#3f8cff)] text-white shadow-[0_18px_35px_rgba(15,111,255,0.28)]"
-      : "bg-slate-100 text-slate-900";
+      ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_18px_35px_rgba(0,107,255,0.24)]"
+      : "bg-white text-slate-950 shadow-[0_16px_30px_rgba(15,23,42,0.06)]";
 
   return (
     <div className={`rounded-[24px] px-5 py-4 ${toneClassName}`}>
@@ -274,7 +274,7 @@ function MetricCard({
 
 function DetailCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl bg-slate-50 px-4 py-4">
+    <div className="muted-panel px-4 py-4">
       <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
         {label}
       </div>

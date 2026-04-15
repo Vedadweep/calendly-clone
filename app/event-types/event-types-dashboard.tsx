@@ -182,31 +182,42 @@ export function EventTypesDashboard() {
 
   return (
     <DashboardShell>
-      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <section className="overflow-hidden rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl space-y-4">
+      <main className="dashboard-page">
+        <div className="dashboard-container flex flex-col gap-8 lg:gap-10">
+        <section className="hero-panel p-6 sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+            <div className="max-w-3xl space-y-5">
               <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                 Event Type Dashboard
               </div>
-              <div className="space-y-3">
-                <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+              <div className="space-y-4">
+                <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
                   Design booking options your guests can trust.
                 </h1>
-                <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+                <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                   Create polished event types, tune their duration, and keep your
                   scheduling lineup organized in one place.
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={openCreateModal}
-              className="inline-flex items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(15,111,255,0.28)] transition hover:bg-[var(--primary-strong)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2"
-            >
-              Add New Event
-            </button>
+            <div className="grid gap-3 sm:grid-cols-[repeat(2,minmax(0,200px))] xl:min-w-[420px]">
+              <HeroMetric
+                label="Event types"
+                value={isLoading ? "..." : String(eventTypes.length)}
+              />
+              <button
+                type="button"
+                onClick={openCreateModal}
+                className="button-primary min-h-28 rounded-[24px] px-6 py-5 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2"
+              >
+                <span className="flex w-full flex-col gap-1">
+                  <span className="text-xs uppercase tracking-[0.22em] text-white/72">
+                    Create
+                  </span>
+                  <span className="text-lg tracking-tight">Add New Event</span>
+                </span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -221,7 +232,7 @@ export function EventTypesDashboard() {
             Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
-                className="min-h-56 animate-pulse rounded-[28px] border border-slate-200/80 bg-white/85 p-6 shadow-[var(--shadow-soft)]"
+                className="surface-panel min-h-64 animate-pulse p-6 sm:p-7"
               >
                 <div className="h-4 w-24 rounded-full bg-slate-200" />
                 <div className="mt-6 h-8 w-2/3 rounded-full bg-slate-200" />
@@ -230,21 +241,21 @@ export function EventTypesDashboard() {
               </div>
             ))
           ) : eventTypes.length === 0 ? (
-            <div className="col-span-full rounded-[28px] border border-dashed border-slate-300 bg-white/80 p-10 text-center shadow-[var(--shadow-soft)]">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--panel-muted)] text-[var(--primary)]">
+            <div className="col-span-full rounded-[30px] border border-dashed border-slate-300 bg-white/88 p-10 text-center shadow-[var(--shadow-soft)] sm:p-14">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[22px] bg-[var(--panel-muted)] text-[var(--primary)]">
                 <CalendarGlyph />
               </div>
-              <h2 className="mt-5 text-xl font-semibold text-slate-900">
+              <h2 className="mt-6 text-2xl font-semibold text-slate-950">
                 No event types yet
               </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600">
                 Create your first event type to start shaping the booking
                 experience.
               </p>
               <button
                 type="button"
                 onClick={openCreateModal}
-                className="mt-6 inline-flex items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--primary-strong)]"
+                className="button-primary mt-7 px-5 py-3 text-sm font-semibold"
               >
                 Create Event Type
               </button>
@@ -253,7 +264,7 @@ export function EventTypesDashboard() {
             eventTypes.map((eventType) => (
               <article
                 key={eventType.id}
-                className="group flex flex-col rounded-[28px] border border-slate-200/80 bg-white/90 p-6 shadow-[var(--shadow-soft)] transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.12)]"
+                className="group surface-panel flex flex-col p-6 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-7"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -263,26 +274,26 @@ export function EventTypesDashboard() {
                     <button
                       type="button"
                       onClick={() => openEditModal(eventType)}
-                      className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                      className="button-secondary px-3.5 py-2 text-sm font-medium"
                     >
                       Edit
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(eventType.id)}
-                      className="rounded-xl border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                      className="button-danger px-3.5 py-2 text-sm font-medium"
                     >
                       Delete
                     </button>
                   </div>
                 </div>
 
-                <div className="mt-6 space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+                <div className="mt-7 space-y-3">
+                  <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
                     {eventType.name}
                   </h2>
                   <p className="text-sm text-slate-500">/{eventType.slug}</p>
-                  <p className="text-sm leading-6 text-slate-600">
+                  <p className="text-sm leading-7 text-slate-600">
                     Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
                     session with a clean booking link and clear scheduling
                     details.
@@ -290,7 +301,7 @@ export function EventTypesDashboard() {
                 </div>
 
                 <div className="mt-auto pt-8">
-                  <div className="rounded-2xl bg-slate-50 px-4 py-4">
+                  <div className="muted-panel px-4 py-4">
                     <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
                       Booking URL
                     </div>
@@ -308,13 +319,13 @@ export function EventTypesDashboard() {
 
       {isModalOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-8 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-[30px] border border-white/80 bg-white p-6 shadow-[0_30px_120px_rgba(15,23,42,0.18)] sm:p-8">
+          <div className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-6 shadow-[var(--shadow-float)] sm:p-8">
             <div className="flex items-start justify-between gap-6">
               <div>
                 <p className="text-sm font-medium text-[var(--primary)]">
                   {activeEventType ? "Edit event type" : "Create event type"}
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+                <h2 className="mt-2 text-2xl font-semibold text-slate-950">
                   {activeEventType
                     ? "Update booking details"
                     : "Build a new booking experience"}
@@ -354,7 +365,7 @@ export function EventTypesDashboard() {
                     });
                   }}
                   placeholder="30 Minute Intro Call"
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                  className="field-control"
                   required
                 />
               </label>
@@ -372,7 +383,7 @@ export function EventTypesDashboard() {
                       }))
                     }
                     placeholder="30-minute-intro-call"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                    className="field-control"
                     required
                   />
                 </label>
@@ -389,7 +400,7 @@ export function EventTypesDashboard() {
                         durationInMinutes: Number(event.target.value),
                       }))
                     }
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                    className="field-control"
                   >
                     {DURATION_OPTIONS.map((duration) => (
                       <option key={duration} value={duration}>
@@ -400,7 +411,7 @@ export function EventTypesDashboard() {
                 </label>
               </div>
 
-              <div className="rounded-2xl bg-slate-50 px-4 py-4 text-sm text-slate-600">
+              <div className="muted-panel px-4 py-4 text-sm text-slate-600">
                 Booking link preview:
                 <span className="ml-2 font-medium text-slate-900">
                   calendly-clone.local/book/{slugifyEventType(form.slug || form.name) || "your-event"}
@@ -411,14 +422,14 @@ export function EventTypesDashboard() {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="inline-flex items-center justify-center rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="button-secondary px-5 py-3 text-sm font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="inline-flex items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+                  className="button-primary px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isPending
                     ? "Saving..."
@@ -432,6 +443,19 @@ export function EventTypesDashboard() {
         </div>
       ) : null}
     </DashboardShell>
+  );
+}
+
+function HeroMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+        {label}
+      </div>
+      <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+        {value}
+      </div>
+    </div>
   );
 }
 

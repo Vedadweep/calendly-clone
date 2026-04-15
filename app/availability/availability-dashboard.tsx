@@ -125,18 +125,18 @@ export function AvailabilityDashboard() {
 
   return (
     <DashboardShell>
-      <main className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
-        <section className="rounded-[32px] border border-white/70 bg-white/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <main className="dashboard-page">
+        <div className="dashboard-container flex max-w-6xl flex-col gap-8 lg:gap-10">
+        <section className="hero-panel p-6 sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
             <div className="space-y-3">
               <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-sm font-medium text-[var(--primary-strong)]">
                 Availability
               </div>
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+              <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.8rem]">
                 Set when people can book with you.
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                 Choose your working days, define your hours, and keep everything
                 aligned to the timezone you actually use.
               </p>
@@ -145,7 +145,7 @@ export function AvailabilityDashboard() {
               type="submit"
               form="availability-form"
               disabled={isPending || isLoading}
-              className="inline-flex items-center justify-center rounded-2xl bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(15,111,255,0.28)] transition hover:bg-[var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+              className="button-primary px-6 py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
             >
               {isPending ? "Saving..." : "Save Availability"}
             </button>
@@ -169,15 +169,15 @@ export function AvailabilityDashboard() {
           className="space-y-6"
           onSubmit={handleSubmit}
         >
-          <section className="rounded-[28px] border border-slate-200/80 bg-white/90 p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <section className="surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold text-slate-900">Timezone</h2>
-                <p className="text-sm text-slate-600">
+                <h2 className="text-xl font-semibold text-slate-950">Timezone</h2>
+                <p className="text-sm leading-7 text-slate-600">
                   All working hours below will be saved in this timezone.
                 </p>
               </div>
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-lg">
                 <select
                   value={timezone}
                   onChange={(event) => {
@@ -187,10 +187,10 @@ export function AvailabilityDashboard() {
                       currentDays.map((day) => ({
                         ...day,
                         timezone: nextTimezone,
-                      })),
+                        })),
                     );
                   }}
-                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100"
+                  className="field-control"
                 >
                   {TIMEZONE_OPTIONS.map((option) => (
                     <option key={option} value={option}>
@@ -202,21 +202,21 @@ export function AvailabilityDashboard() {
             </div>
           </section>
 
-          <section className="rounded-[28px] border border-slate-200/80 bg-white/90 p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <section className="surface-panel p-6 sm:p-8">
             <div className="space-y-1">
-              <h2 className="text-xl font-semibold text-slate-900">Weekly hours</h2>
-              <p className="text-sm text-slate-600">
+              <h2 className="text-xl font-semibold text-slate-950">Weekly hours</h2>
+              <p className="text-sm leading-7 text-slate-600">
                 Enable the days you want to take meetings and set a time range for
                 each one.
               </p>
             </div>
 
-            <div className="mt-6 space-y-4">
+            <div className="mt-8 space-y-4">
               {isLoading
                 ? Array.from({ length: 7 }).map((_, index) => (
                     <div
                       key={index}
-                      className="grid animate-pulse gap-4 rounded-3xl border border-slate-100 bg-slate-50 px-4 py-5 md:grid-cols-[1.1fr_0.9fr_0.9fr]"
+                      className="grid animate-pulse gap-4 rounded-[24px] border border-slate-100 bg-slate-50 px-4 py-5 md:grid-cols-[1.1fr_0.9fr_0.9fr]"
                     >
                       <div className="h-11 rounded-2xl bg-slate-200" />
                       <div className="h-11 rounded-2xl bg-slate-200" />
@@ -235,11 +235,11 @@ export function AvailabilityDashboard() {
                     return (
                       <div
                         key={weekday.value}
-                        className="grid gap-4 rounded-3xl border border-slate-200 bg-slate-50/80 px-4 py-5 md:grid-cols-[1.1fr_0.9fr_0.9fr]"
+                        className="grid gap-4 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(249,251,255,0.95),rgba(244,248,252,0.92))] px-4 py-5 shadow-[0_14px_34px_rgba(15,23,42,0.04)] md:grid-cols-[1.1fr_0.9fr_0.9fr] sm:px-5"
                       >
-                        <div className="flex items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3">
+                        <div className="flex items-center justify-between gap-4 rounded-[20px] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                           <div>
-                            <div className="text-sm font-semibold text-slate-900">
+                            <div className="text-sm font-semibold text-slate-950">
                               {weekday.label}
                             </div>
                             <div className="text-xs text-slate-500">
@@ -257,7 +257,9 @@ export function AvailabilityDashboard() {
                               }))
                             }
                             className={`relative inline-flex h-7 w-12 items-center rounded-full transition ${
-                              day.enabled ? "bg-[var(--primary)]" : "bg-slate-300"
+                              day.enabled
+                                ? "bg-[linear-gradient(135deg,#006bff,#3b92ff)] shadow-[0_12px_20px_rgba(0,107,255,0.22)]"
+                                : "bg-slate-300"
                             }`}
                           >
                             <span
@@ -282,7 +284,7 @@ export function AvailabilityDashboard() {
                               }))
                             }
                             disabled={!day.enabled || isPending}
-                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                            className="field-control"
                           />
                         </label>
 
@@ -300,7 +302,7 @@ export function AvailabilityDashboard() {
                               }))
                             }
                             disabled={!day.enabled || isPending}
-                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-[var(--primary)] focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                            className="field-control"
                           />
                         </label>
                       </div>

@@ -1,9 +1,17 @@
 "use client";
 
 import { format, isBefore, startOfDay } from "date-fns";
+import { motion } from "framer-motion";
 import Calendar from "react-calendar";
 import { useEffect, useState, useTransition } from "react";
 
+import {
+  AnimatedPage,
+  HoverCard,
+  MotionButton,
+  Reveal,
+  interactionTransition,
+} from "@/app/motion-provider";
 import { formatDurationLabel } from "@/lib/event-types";
 
 type EventTypeDetails = {
@@ -183,8 +191,10 @@ export function BookingPageClient({
   }
 
   return (
+    <AnimatedPage>
     <main className="dashboard-page min-h-screen">
       <div className="dashboard-container flex max-w-6xl flex-col gap-6 lg:gap-8">
+        <Reveal>
         <section className="hero-panel p-6 sm:p-8 lg:p-10">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
@@ -210,15 +220,23 @@ export function BookingPageClient({
             </div>
           </div>
         </section>
+        </Reveal>
 
         {error ? (
+          <Reveal>
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
           </div>
+          </Reveal>
         ) : null}
 
         {confirmation ? (
-          <section className="surface-panel border-emerald-200 p-6 sm:p-8">
+          <motion.section
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={interactionTransition}
+            className="surface-panel border-emerald-200 p-6 sm:p-8"
+          >
             <div className="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
               Booking Confirmed
             </div>
@@ -229,10 +247,12 @@ export function BookingPageClient({
               {confirmation.eventType.name} is scheduled for {confirmation.dateLabel} at{" "}
               {confirmation.timeLabel}. A confirmation can be sent to {confirmation.guestEmail}.
             </p>
-          </section>
+          </motion.section>
         ) : null}
 
+        <Reveal delay={0.05}>
         <section className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+          <HoverCard>
           <div className="surface-panel p-5 sm:p-6 lg:sticky lg:top-28 lg:self-start">
             <div className="space-y-1">
               <h2 className="text-xl font-semibold text-slate-950">Select a date</h2>
@@ -260,7 +280,9 @@ export function BookingPageClient({
               />
             </div>
           </div>
+          </HoverCard>
 
+          <HoverCard>
           <div className="surface-panel min-w-0 p-5 sm:p-6">
             <div className="flex flex-col gap-2 border-b border-slate-100 pb-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -297,18 +319,29 @@ export function BookingPageClient({
                     const isSelected = selectedTime === slot.time;
 
                     return (
-                      <button
+                      <MotionButton
                         key={slot.time}
                         type="button"
                         onClick={() => setSelectedTime(slot.time)}
                         className={`min-h-11 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
                           isSelected
                             ? "border-[var(--primary)] bg-[linear-gradient(135deg,#006bff,#3b92ff)] text-white shadow-[0_14px_30px_rgba(0,107,255,0.22)]"
-                            : "border-slate-200 bg-white text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary)]"
+                            : "border-slate-200 bg-white text-slate-700 hover:border-[var(--primary)] hover:bg-[var(--accent)] hover:text-[var(--primary)] hover:shadow-[0_14px_30px_rgba(0,107,255,0.12)]"
                         }`}
+                        whileHover={
+                          isSelected
+                            ? { scale: 1.02, filter: "brightness(1.03)" }
+                            : {
+                                scale: 1.04,
+                                backgroundColor: "rgba(230, 240, 255, 0.95)",
+                                borderColor: "rgba(0, 107, 255, 0.72)",
+                                color: "#0050d4",
+                              }
+                        }
+                        whileTap={{ scale: 0.97 }}
                       >
                         {slot.label}
-                      </button>
+                      </MotionButton>
                     );
                   })}
                 </div>
@@ -351,28 +384,33 @@ export function BookingPageClient({
                 />
               </label>
 
-              <button
+              <MotionButton
                 type="submit"
                 disabled={isPending || !selectedTime}
                 className="button-primary w-full px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isPending ? "Confirming..." : "Confirm Booking"}
-              </button>
+              </MotionButton>
             </form>
           </div>
+          </HoverCard>
         </section>
+        </Reveal>
       </div>
     </main>
+    </AnimatedPage>
   );
 }
 
 function SummaryCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-4 text-sm text-slate-600 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
-      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-        {label}
+    <HoverCard>
+      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-4 text-sm text-slate-600 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+          {label}
+        </div>
+        <div className="mt-2 text-base font-semibold text-slate-950">{value}</div>
       </div>
-      <div className="mt-2 text-base font-semibold text-slate-950">{value}</div>
-    </div>
+    </HoverCard>
   );
 }

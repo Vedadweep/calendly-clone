@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { MotionProvider } from "@/app/motion-provider";
 
 export const metadata: Metadata = {
   title: "Calendly Clone",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full font-sans text-[15px] text-slate-900 sm:text-base">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

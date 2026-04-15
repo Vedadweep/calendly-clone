@@ -1,8 +1,16 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState, useTransition } from "react";
 
 import { DashboardShell } from "@/app/dashboard-shell";
+import {
+  AnimatedPage,
+  HoverCard,
+  MotionButton,
+  Reveal,
+  interactionTransition,
+} from "@/app/motion-provider";
 import {
   DURATION_OPTIONS,
   formatDurationLabel,
@@ -182,8 +190,10 @@ export function EventTypesDashboard() {
 
   return (
     <DashboardShell>
+      <AnimatedPage>
       <main className="dashboard-page">
         <div className="dashboard-container flex flex-col gap-8 lg:gap-10">
+          <Reveal>
           <section className="hero-panel p-5 sm:p-8 lg:p-10">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
               <div className="max-w-3xl space-y-5">
@@ -205,7 +215,7 @@ export function EventTypesDashboard() {
                   label="Event types"
                   value={isLoading ? "..." : String(eventTypes.length)}
                 />
-                <button
+                <MotionButton
                   type="button"
                   onClick={openCreateModal}
                   className="button-primary min-h-24 rounded-[24px] px-5 py-5 text-left text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 sm:min-h-28 sm:px-6"
@@ -216,17 +226,21 @@ export function EventTypesDashboard() {
                     </span>
                     <span className="text-lg tracking-tight">Add New Event</span>
                   </span>
-                </button>
+                </MotionButton>
               </div>
             </div>
           </section>
+          </Reveal>
 
           {error ? (
+            <Reveal>
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
+            </Reveal>
           ) : null}
 
+          <Reveal delay={0.05}>
           <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {isLoading ? (
               Array.from({ length: 3 }).map((_, index) => (
@@ -252,74 +266,87 @@ export function EventTypesDashboard() {
                   Create your first event type to start shaping the booking
                   experience.
                 </p>
-                <button
+                <MotionButton
                   type="button"
                   onClick={openCreateModal}
                   className="button-primary mt-7 px-5 py-3 text-sm font-semibold"
                 >
                   Create Event Type
-                </button>
+                </MotionButton>
               </div>
             ) : (
               eventTypes.map((eventType) => (
-                <article
-                  key={eventType.id}
-                  className="group surface-panel flex flex-col p-6 transition hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-7"
-                >
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                      {formatDurationLabel(eventType.durationInMinutes)}
-                    </div>
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                      <button
-                        type="button"
-                        onClick={() => openEditModal(eventType)}
-                        className="button-secondary w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(eventType.id)}
-                        className="button-danger w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="mt-7 space-y-3">
-                    <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
-                      {eventType.name}
-                    </h2>
-                    <p className="text-sm text-slate-500">/{eventType.slug}</p>
-                    <p className="text-sm leading-7 text-slate-600">
-                      Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
-                      session with a clean booking link and clear scheduling
-                      details.
-                    </p>
-                  </div>
-
-                  <div className="mt-auto pt-8">
-                    <div className="muted-panel px-4 py-4">
-                      <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                        Booking URL
+                <HoverCard key={eventType.id}>
+                  <article className="group surface-panel flex flex-col p-6 sm:p-7">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                        {formatDurationLabel(eventType.durationInMinutes)}
                       </div>
-                      <div className="mt-2 break-all text-sm font-medium text-slate-700">
-                        calendly-clone.local/book/{eventType.slug}
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <MotionButton
+                          type="button"
+                          onClick={() => openEditModal(eventType)}
+                          className="button-secondary w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
+                        >
+                          Edit
+                        </MotionButton>
+                        <MotionButton
+                          type="button"
+                          onClick={() => handleDelete(eventType.id)}
+                          className="button-danger w-full px-3.5 py-2 text-sm font-medium sm:w-auto"
+                        >
+                          Delete
+                        </MotionButton>
                       </div>
                     </div>
-                  </div>
-                </article>
+
+                    <div className="mt-7 space-y-3">
+                      <h2 className="text-[1.75rem] font-semibold tracking-tight text-slate-950">
+                        {eventType.name}
+                      </h2>
+                      <p className="text-sm text-slate-500">/{eventType.slug}</p>
+                      <p className="text-sm leading-7 text-slate-600">
+                        Offer a {formatDurationLabel(eventType.durationInMinutes).toLowerCase()}{" "}
+                        session with a clean booking link and clear scheduling
+                        details.
+                      </p>
+                    </div>
+
+                    <div className="mt-auto pt-8">
+                      <div className="muted-panel px-4 py-4">
+                        <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          Booking URL
+                        </div>
+                        <div className="mt-2 break-all text-sm font-medium text-slate-700">
+                          calendly-clone.local/book/{eventType.slug}
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </HoverCard>
               ))
             )}
           </section>
+          </Reveal>
         </div>
       </main>
 
+      <AnimatePresence>
       {isModalOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-8 backdrop-blur-sm">
-          <div className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-5 shadow-[var(--shadow-float)] sm:p-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={interactionTransition}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4 py-8 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={interactionTransition}
+            className="w-full max-w-xl rounded-[32px] border border-white/80 bg-white p-5 shadow-[var(--shadow-float)] sm:p-8"
+          >
             <div className="flex items-start justify-between gap-4 sm:gap-6">
               <div>
                 <p className="text-sm font-medium text-[var(--primary)]">
@@ -331,14 +358,14 @@ export function EventTypesDashboard() {
                     : "Build a new booking experience"}
                 </h2>
               </div>
-              <button
+              <MotionButton
                 type="button"
                 onClick={closeModal}
                 className="rounded-full border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-50"
                 aria-label="Close modal"
               >
                 <CloseGlyph />
-              </button>
+              </MotionButton>
             </div>
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
@@ -419,14 +446,14 @@ export function EventTypesDashboard() {
               </div>
 
               <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
-                <button
+                <MotionButton
                   type="button"
                   onClick={closeModal}
                   className="button-secondary px-5 py-3 text-sm font-semibold"
                 >
                   Cancel
-                </button>
-                <button
+                </MotionButton>
+                <MotionButton
                   type="submit"
                   disabled={isPending}
                   className="button-primary px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
@@ -436,26 +463,30 @@ export function EventTypesDashboard() {
                     : activeEventType
                       ? "Save Changes"
                       : "Create Event"}
-                </button>
+                </MotionButton>
               </div>
             </form>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       ) : null}
+      </AnimatePresence>
+      </AnimatedPage>
     </DashboardShell>
   );
 }
 
 function HeroMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
-      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-        {label}
+    <HoverCard>
+      <div className="rounded-[24px] border border-white/70 bg-white/92 px-5 py-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)]">
+        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+          {label}
+        </div>
+        <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+          {value}
+        </div>
       </div>
-      <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-        {value}
-      </div>
-    </div>
+    </HoverCard>
   );
 }
 

@@ -4,6 +4,12 @@ import { format } from "date-fns";
 import { useMemo, useState, useTransition } from "react";
 
 import { DashboardShell } from "@/app/dashboard-shell";
+import {
+  AnimatedPage,
+  HoverCard,
+  MotionButton,
+  Reveal,
+} from "@/app/motion-provider";
 import type { MeetingRecord } from "@/lib/bookings";
 
 type MeetingsDashboardProps = {
@@ -80,8 +86,10 @@ export function MeetingsDashboard({
 
   return (
     <DashboardShell>
+      <AnimatedPage>
       <main className="dashboard-page">
         <div className="dashboard-container flex flex-col gap-8 lg:gap-10">
+          <Reveal>
           <section className="hero-panel p-6 sm:p-8 lg:p-10">
             <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
               <div className="max-w-2xl space-y-4">
@@ -112,11 +120,14 @@ export function MeetingsDashboard({
               </div>
             </div>
           </section>
+          </Reveal>
 
           {error ? (
+            <Reveal>
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
+            </Reveal>
           ) : null}
 
           <MeetingsSection
@@ -142,6 +153,7 @@ export function MeetingsDashboard({
           />
         </div>
       </main>
+      </AnimatedPage>
     </DashboardShell>
   );
 }
@@ -168,6 +180,7 @@ function MeetingsSection({
   onCancel,
 }: MeetingsSectionProps) {
   return (
+    <Reveal delay={0.05}>
     <section className="surface-panel p-6 sm:p-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -199,54 +212,54 @@ function MeetingsSection({
             const isCancelling = activeMeetingId === meeting.id && isPending;
 
             return (
-              <article
-                key={meeting.id}
-                className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_auto]"
-              >
-                <div className="space-y-3">
-                  <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-                    {meeting.eventName}
+              <HoverCard key={meeting.id} hoverScale={1.02}>
+                <article className="grid gap-5 rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,250,255,0.92))] p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] sm:p-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_auto]">
+                  <div className="space-y-3">
+                    <div className="inline-flex w-fit items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
+                      {meeting.eventName}
+                    </div>
+                    <div>
+                      <h3 className="break-words text-xl font-semibold text-slate-950">
+                        {meeting.inviteeName}
+                      </h3>
+                      <p className="mt-1 break-all text-sm text-slate-500">
+                        {meeting.inviteeEmail}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="break-words text-xl font-semibold text-slate-950">
-                      {meeting.inviteeName}
-                    </h3>
-                    <p className="mt-1 break-all text-sm text-slate-500">
-                      {meeting.inviteeEmail}
-                    </p>
+
+                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                    <DetailCard
+                      label="Date"
+                      value={format(new Date(meeting.startTime), "EEEE, MMMM d, yyyy")}
+                    />
+                    <DetailCard
+                      label="Time"
+                      value={`${format(new Date(meeting.startTime), "h:mm a")} - ${format(
+                        new Date(meeting.endTime),
+                        "h:mm a",
+                      )}`}
+                    />
                   </div>
-                </div>
 
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-                  <DetailCard
-                    label="Date"
-                    value={format(new Date(meeting.startTime), "EEEE, MMMM d, yyyy")}
-                  />
-                  <DetailCard
-                    label="Time"
-                    value={`${format(new Date(meeting.startTime), "h:mm a")} - ${format(
-                      new Date(meeting.endTime),
-                      "h:mm a",
-                    )}`}
-                  />
-                </div>
-
-                <div className="flex items-start justify-stretch xl:justify-end">
-                  <button
-                    type="button"
-                    onClick={() => onCancel(meeting)}
-                    disabled={isCancelling}
-                    className="button-danger inline-flex min-h-11 w-full items-center justify-center px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto xl:min-w-32"
-                  >
-                    {isCancelling ? "Cancelling..." : "Cancel meeting"}
-                  </button>
-                </div>
-              </article>
+                  <div className="flex items-start justify-stretch xl:justify-end">
+                    <MotionButton
+                      type="button"
+                      onClick={() => onCancel(meeting)}
+                      disabled={isCancelling}
+                      className="button-danger inline-flex min-h-11 w-full items-center justify-center px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto xl:min-w-32"
+                    >
+                      {isCancelling ? "Cancelling..." : "Cancel meeting"}
+                    </MotionButton>
+                  </div>
+                </article>
+              </HoverCard>
             );
           })}
         </div>
       )}
     </section>
+    </Reveal>
   );
 }
 
@@ -265,10 +278,12 @@ function MetricCard({
       : "bg-white text-slate-950 shadow-[0_16px_30px_rgba(15,23,42,0.06)]";
 
   return (
-    <div className={`rounded-[24px] px-5 py-4 ${toneClassName}`}>
-      <div className="text-sm font-medium opacity-90">{label}</div>
-      <div className="mt-2 text-3xl font-semibold tracking-tight">{value}</div>
-    </div>
+    <HoverCard hoverScale={1.025}>
+      <div className={`rounded-[24px] px-5 py-4 ${toneClassName}`}>
+        <div className="text-sm font-medium opacity-90">{label}</div>
+        <div className="mt-2 text-3xl font-semibold tracking-tight">{value}</div>
+      </div>
+    </HoverCard>
   );
 }
 

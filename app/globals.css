@@ -168,11 +168,13 @@ textarea::placeholder {
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
+    filter 0.2s ease,
     opacity 0.2s ease;
 }
 
 .button-primary:hover {
   transform: translateY(-1px);
+  filter: brightness(1.04);
   box-shadow: 0 20px 38px rgba(0, 107, 255, 0.28);
 }
 
@@ -188,6 +190,7 @@ textarea::placeholder {
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
+    filter 0.2s ease,
     transform 0.2s ease;
 }
 
@@ -195,6 +198,7 @@ textarea::placeholder {
   transform: translateY(-1px);
   border-color: #bfd2e7;
   background: #f8fbff;
+  filter: brightness(1.03);
 }
 
 .button-danger {
@@ -206,12 +210,19 @@ textarea::placeholder {
   border: 1px solid #fecaca;
   background: white;
   color: #dc2626;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, filter 0.2s ease, transform 0.2s ease;
 }
 
 .button-danger:hover {
   transform: translateY(-1px);
   background: #fff5f5;
+  filter: brightness(1.02);
+}
+
+.button-primary:active,
+.button-secondary:active,
+.button-danger:active {
+  transform: scale(0.98);
 }
 
 @media (min-width: 640px) {

@@ -4,6 +4,12 @@ import { useEffect, useState, useTransition } from "react";
 
 import { DashboardShell } from "@/app/dashboard-shell";
 import {
+  AnimatedPage,
+  HoverCard,
+  MotionButton,
+  Reveal,
+} from "@/app/motion-provider";
+import {
   TIMEZONE_OPTIONS,
   WEEKDAY_OPTIONS,
   type AvailabilityDayRecord,
@@ -125,8 +131,10 @@ export function AvailabilityDashboard() {
 
   return (
     <DashboardShell>
+      <AnimatedPage>
       <main className="dashboard-page">
         <div className="dashboard-container flex max-w-6xl flex-col gap-8 lg:gap-10">
+          <Reveal>
           <section className="hero-panel p-5 sm:p-8 lg:p-10">
             <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
               <div className="space-y-3">
@@ -141,27 +149,32 @@ export function AvailabilityDashboard() {
                   aligned to the timezone you actually use.
                 </p>
               </div>
-              <button
+              <MotionButton
                 type="submit"
                 form="availability-form"
                 disabled={isPending || isLoading}
                 className="button-primary min-h-11 w-full px-6 py-3.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
               >
                 {isPending ? "Saving..." : "Save Availability"}
-              </button>
+              </MotionButton>
             </div>
           </section>
+          </Reveal>
 
           {error ? (
+            <Reveal>
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
+            </Reveal>
           ) : null}
 
           {successMessage ? (
+            <Reveal>
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
               {successMessage}
             </div>
+            </Reveal>
           ) : null}
 
           <form
@@ -169,6 +182,7 @@ export function AvailabilityDashboard() {
             className="space-y-6"
             onSubmit={handleSubmit}
           >
+          <Reveal delay={0.04}>
           <section className="surface-panel p-6 sm:p-8">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="space-y-1">
@@ -201,7 +215,9 @@ export function AvailabilityDashboard() {
               </div>
             </div>
           </section>
+          </Reveal>
 
+          <Reveal delay={0.06}>
           <section className="surface-panel p-6 sm:p-8">
             <div className="space-y-1">
               <h2 className="text-xl font-semibold text-slate-950">Weekly hours</h2>
@@ -233,8 +249,8 @@ export function AvailabilityDashboard() {
                     }
 
                     return (
+                      <HoverCard key={weekday.value} hoverScale={1.02}>
                       <div
-                        key={weekday.value}
                         className="grid gap-4 rounded-[24px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(249,251,255,0.95),rgba(244,248,252,0.92))] px-4 py-5 shadow-[0_14px_34px_rgba(15,23,42,0.04)] md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.9fr)] sm:px-5"
                       >
                         <div className="flex items-center justify-between gap-4 rounded-[20px] bg-white px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
@@ -246,7 +262,7 @@ export function AvailabilityDashboard() {
                               {day.enabled ? "Available" : "Unavailable"}
                             </div>
                           </div>
-                          <button
+                          <MotionButton
                             type="button"
                             role="switch"
                             aria-checked={day.enabled}
@@ -267,7 +283,7 @@ export function AvailabilityDashboard() {
                                 day.enabled ? "translate-x-6" : "translate-x-1"
                               }`}
                             />
-                          </button>
+                          </MotionButton>
                         </div>
 
                         <label className="block space-y-2">
@@ -306,13 +322,16 @@ export function AvailabilityDashboard() {
                           />
                         </label>
                       </div>
+                      </HoverCard>
                     );
                   })}
             </div>
           </section>
+          </Reveal>
           </form>
         </div>
       </main>
+      </AnimatedPage>
     </DashboardShell>
   );
 }

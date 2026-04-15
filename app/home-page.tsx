@@ -1,7 +1,17 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import {
+  AnimatedPage,
+  HoverCard,
+  InteractiveShell,
+  MotionButton,
+  Reveal,
+  ScrollShadowHeader,
+  interactionTransition,
+} from "@/app/motion-provider";
 
 const navigationItems = [
   { href: "/event-types", label: "Event Types" },
@@ -80,22 +90,22 @@ const integrations = [
 ];
 
 const primaryCtaClassName =
-  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-6 py-3.5 text-sm font-semibold text-black shadow-[0_20px_40px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-black hover:shadow-[0_24px_45px_rgba(0,107,255,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#006bff] focus-visible:ring-offset-2";
 
 const secondaryCtaClassName =
-  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-blue-700 shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6]";
+  "relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold !text-black shadow-[0_16px_34px_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:bg-blue-50 hover:!text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b4fd6]";
 
 export function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeIntegration, setActiveIntegration] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <AnimatedPage className="min-h-screen bg-white text-slate-900">
       <div className="absolute inset-x-0 top-0 -z-10 overflow-hidden">
         <div className="mx-auto h-[34rem] max-w-7xl bg-[radial-gradient(circle_at_top_left,rgba(0,107,255,0.16),transparent_30%),radial-gradient(circle_at_top_right,rgba(59,146,255,0.14),transparent_26%),linear-gradient(180deg,#f8fbff_0%,rgba(255,255,255,0)_78%)]" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/92 backdrop-blur-xl">
+      <ScrollShadowHeader className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/92 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <Link
             href="/"
@@ -117,12 +127,14 @@ export function HomePage() {
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
-            <Link
-              href="/event-types"
-              className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)]"
-            >
-              Get Started
-            </Link>
+            <InteractiveShell>
+              <Link
+                href="/event-types"
+                className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-black shadow-[0_16px_32px_rgba(0,107,255,0.24)] transition hover:-translate-y-0.5 hover:text-black hover:shadow-[0_20px_38px_rgba(0,107,255,0.28)]"
+              >
+                Get Started
+              </Link>
+            </InteractiveShell>
           </div>
 
           <button
@@ -137,36 +149,51 @@ export function HomePage() {
           </button>
         </div>
 
-        {isMobileMenuOpen ? (
-          <div className="border-t border-slate-200 bg-white md:hidden">
-            <nav
-              id="marketing-navigation"
-              className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6"
+        <AnimatePresence initial={false}>
+          {isMobileMenuOpen ? (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={interactionTransition}
+              className="overflow-hidden border-t border-slate-200 bg-white md:hidden"
             >
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <Link
-                href="/event-types"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="mt-2 inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(0,107,255,0.24)]"
+              <nav
+                id="marketing-navigation"
+                className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-4 sm:px-6"
               >
-                Get Started
-              </Link>
-            </nav>
-          </div>
-        ) : null}
-      </header>
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <InteractiveShell className="mt-2">
+                  <Link
+                    href="/event-types"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[linear-gradient(135deg,#006bff,#5aa2ff)] px-5 py-3 text-sm font-semibold text-black shadow-[0_16px_32px_rgba(0,107,255,0.24)] hover:text-black"
+                  >
+                    Get Started
+                  </Link>
+                </InteractiveShell>
+              </nav>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </ScrollShadowHeader>
 
       <main>
-        <section className="mx-auto grid max-w-7xl gap-14 px-4 pb-20 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)] lg:items-center lg:gap-16 lg:px-8 lg:pb-28">
+        <motion.section
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+          className="mx-auto grid max-w-7xl gap-14 px-4 pb-20 pt-14 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(340px,0.95fr)] lg:items-center lg:gap-16 lg:px-8 lg:pb-28"
+        >
           <div className="max-w-2xl">
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700">
               Smarter scheduling for every meeting
@@ -179,18 +206,22 @@ export function HomePage() {
               clear availability, and meeting flows that feel effortless.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/event-types"
-                className={primaryCtaClassName}
-              >
-                Get Started
-              </Link>
-              <a
-                href="#features"
-                className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
-              >
-                Explore features
-              </a>
+              <InteractiveShell>
+                <Link
+                  href="/event-types"
+                  className={primaryCtaClassName}
+                >
+                  Get Started
+                </Link>
+              </InteractiveShell>
+              <InteractiveShell>
+                <a
+                  href="#features"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  Explore features
+                </a>
+              </InteractiveShell>
             </div>
             <div className="mt-10 flex flex-wrap gap-6 text-sm text-slate-500">
               <div>
@@ -218,8 +249,22 @@ export function HomePage() {
             <div className="absolute -left-10 top-10 hidden h-28 w-28 rounded-full bg-blue-100 blur-2xl sm:block" />
             <div className="absolute -right-6 bottom-4 hidden h-24 w-24 rounded-full bg-sky-100 blur-2xl sm:block" />
 
-            <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-6">
-              <div className="rounded-[26px] bg-[linear-gradient(180deg,#f8fbff_0%,#f2f7ff_100%)] p-5">
+            <motion.div
+              initial={{ opacity: 0, y: 32, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
+              className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-4 shadow-[0_28px_80px_rgba(15,23,42,0.12)] sm:p-6"
+            >
+              <motion.div
+                animate={{ y: [0, -4, 0] }}
+                transition={{
+                  duration: 4.8,
+                  ease: "easeInOut",
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "mirror",
+                }}
+                className="rounded-[26px] bg-[linear-gradient(180deg,#f8fbff_0%,#f2f7ff_100%)] p-5"
+              >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-slate-900">
@@ -277,20 +322,26 @@ export function HomePage() {
                       Available times
                     </p>
                     <div className="mt-4 space-y-3">
-                      {["09:00 AM", "10:30 AM", "01:00 PM", "03:30 PM"].map(
-                        (slot, index) => (
-                          <div
-                            key={slot}
-                            className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
-                              index === 1
-                                ? "border-blue-200 bg-blue-50 text-blue-700"
-                                : "border-slate-200 bg-white text-slate-700"
-                            }`}
-                          >
+                      {["09:00 AM", "10:30 AM", "01:00 PM", "03:30 PM"].map((slot, index) => (
+                        <motion.div
+                          key={slot}
+                          whileHover={{
+                            scale: 1.04,
+                            y: -2,
+                            backgroundColor: "rgba(239, 246, 255, 0.95)",
+                            borderColor: "rgba(96, 165, 250, 0.6)",
+                            color: "#1d4ed8",
+                          }}
+                          transition={interactionTransition}
+                          className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+                            index === 1
+                              ? "border-blue-200 bg-blue-50 text-blue-700"
+                              : "border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50/70 hover:text-blue-700"
+                          }`}
+                        >
                             {slot}
-                          </div>
-                        ),
-                      )}
+                        </motion.div>
+                      ))}
                     </div>
                     <div className="mt-5 rounded-[22px] bg-slate-950 px-4 py-4 text-white">
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
@@ -302,12 +353,13 @@ export function HomePage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
-        <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <Reveal>
+          <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
               Features
@@ -325,26 +377,27 @@ export function HomePage() {
               const Icon = feature.icon;
 
               return (
-                <article
-                  key={feature.title}
-                  className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_52px_rgba(15,23,42,0.09)]"
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(0,107,255,0.12),rgba(90,162,255,0.18))] text-blue-700">
-                    <Icon />
-                  </div>
-                  <h3 className="mt-6 text-2xl font-semibold tracking-tight text-slate-950">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-3 text-base leading-7 text-slate-600">
-                    {feature.description}
-                  </p>
-                </article>
+                <HoverCard key={feature.title}>
+                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition-shadow">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(0,107,255,0.12),rgba(90,162,255,0.18))] text-blue-700">
+                      <Icon />
+                    </div>
+                    <h3 className="mt-6 text-2xl font-semibold tracking-tight text-slate-950">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-7 text-slate-600">
+                      {feature.description}
+                    </p>
+                  </article>
+                </HoverCard>
               );
             })}
           </div>
-        </section>
+          </section>
+        </Reveal>
 
-        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <Reveal delay={0.04}>
+          <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-10 rounded-[36px] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-6 py-10 shadow-[0_24px_70px_rgba(15,23,42,0.06)] sm:px-8 lg:px-10">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-2xl">
@@ -369,41 +422,44 @@ export function HomePage() {
                 const Icon = integration.icon;
 
                 return (
-                  <article
-                    key={integration.name}
-                    className={`group rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,var(--tw-gradient-stops))] p-6 ring-1 transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_24px_48px_rgba(15,23,42,0.1)] ${integration.accentClassName}`}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-sm">
-                        <Icon />
-                      </div>
-                      <span className="rounded-full border border-blue-100 bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">
-                        Popular
-                      </span>
-                    </div>
-
-                    <h3 className="mt-6 text-xl font-semibold tracking-tight text-slate-950">
-                      {integration.name}
-                    </h3>
-                    <p className="mt-3 min-h-20 text-sm leading-7 text-slate-600">
-                      {integration.description}
-                    </p>
-
-                    <button
-                      type="button"
-                      onClick={() => setActiveIntegration(integration.name)}
-                      className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-[0_10px_24px_rgba(0,107,255,0.08)] transition hover:border-blue-300 hover:bg-blue-50"
+                  <HoverCard key={integration.name}>
+                    <article
+                      className={`group rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,var(--tw-gradient-stops))] p-6 ring-1 transition-shadow ${integration.accentClassName}`}
                     >
-                      Connect
-                    </button>
-                  </article>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-sm">
+                          <Icon />
+                        </div>
+                        <span className="rounded-full border border-blue-100 bg-white/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-700">
+                          Popular
+                        </span>
+                      </div>
+
+                      <h3 className="mt-6 text-xl font-semibold tracking-tight text-slate-950">
+                        {integration.name}
+                      </h3>
+                      <p className="mt-3 min-h-20 text-sm leading-7 text-slate-600">
+                        {integration.description}
+                      </p>
+
+                      <MotionButton
+                        type="button"
+                        onClick={() => setActiveIntegration(integration.name)}
+                        className="mt-6 inline-flex w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-[0_10px_24px_rgba(0,107,255,0.08)] transition hover:border-blue-300 hover:bg-blue-50"
+                      >
+                        Connect
+                      </MotionButton>
+                    </article>
+                  </HoverCard>
                 );
               })}
             </div>
           </div>
-        </section>
+          </section>
+        </Reveal>
 
-        <section className="border-y border-slate-200 bg-slate-50/80">
+        <Reveal delay={0.06}>
+          <section className="border-y border-slate-200 bg-slate-50/80">
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-700">
@@ -416,31 +472,32 @@ export function HomePage() {
 
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
               {workflowSteps.map((step, index) => (
-                <article
-                  key={step.title}
-                  className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.05)]"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                      {step.step}
-                    </span>
-                    <span className="text-4xl font-semibold tracking-tight text-slate-200">
-                      0{index + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-base leading-7 text-slate-600">
-                    {step.description}
-                  </p>
-                </article>
+                <HoverCard key={step.title}>
+                  <article className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                        {step.step}
+                      </span>
+                      <span className="text-4xl font-semibold tracking-tight text-slate-200">
+                        0{index + 1}
+                      </span>
+                    </div>
+                    <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-base leading-7 text-slate-600">
+                      {step.description}
+                    </p>
+                  </article>
+                </HoverCard>
               ))}
             </div>
           </div>
-        </section>
+          </section>
+        </Reveal>
 
-        <section className="px-4 pb-20 sm:px-6 lg:px-8">
+        <Reveal delay={0.08}>
+          <section className="px-4 pb-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[36px] bg-[linear-gradient(135deg,#0f172a_0%,#0b4fd6_54%,#53a2ff_100%)] px-6 py-14 text-white shadow-[0_28px_80px_rgba(15,23,42,0.18)] sm:px-10 lg:px-14">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
@@ -455,41 +512,52 @@ export function HomePage() {
                 </p>
               </div>
 
-              <Link
-                href="/event-types"
-                className={secondaryCtaClassName}
-              >
-                Get Started
-              </Link>
+              <InteractiveShell>
+                <Link
+                  href="/event-types"
+                  className={secondaryCtaClassName}
+                >
+                  Get Started
+                </Link>
+              </InteractiveShell>
             </div>
           </div>
-        </section>
+          </section>
+        </Reveal>
       </main>
 
-      {activeIntegration ? (
-        <div className="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-center sm:inset-x-auto sm:right-6 sm:justify-end">
-          <div className="pointer-events-auto w-full max-w-sm rounded-[24px] border border-blue-100 bg-white p-4 shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
-                <SparkIcon />
+      <AnimatePresence>
+        {activeIntegration ? (
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={interactionTransition}
+            className="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-center sm:inset-x-auto sm:right-6 sm:justify-end"
+          >
+            <div className="pointer-events-auto w-full max-w-sm rounded-[24px] border border-blue-100 bg-white p-4 shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+                  <SparkIcon />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-slate-950">{activeIntegration}</p>
+                  <p className="mt-1 text-sm text-slate-600">Integration coming soon</p>
+                </div>
+                <MotionButton
+                  type="button"
+                  aria-label="Dismiss integration message"
+                  onClick={() => setActiveIntegration(null)}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
+                >
+                  <CloseIcon />
+                </MotionButton>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-slate-950">{activeIntegration}</p>
-                <p className="mt-1 text-sm text-slate-600">Integration coming soon</p>
-              </div>
-              <button
-                type="button"
-                aria-label="Dismiss integration message"
-                onClick={() => setActiveIntegration(null)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-2xl text-slate-400 transition hover:bg-slate-50 hover:text-slate-700"
-              >
-                <CloseIcon />
-              </button>
             </div>
-          </div>
-        </div>
-      ) : null}
-    </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </AnimatedPage>
   );
 }
 
